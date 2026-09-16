@@ -1,7 +1,7 @@
-import LandingCard from './components/LandingCard.jsx'
+import WaitingList from './components/WaitingList.jsx'
 
 function App() {
-  return <LandingCard />
+  return <WaitingList />
 }
 
 export default App

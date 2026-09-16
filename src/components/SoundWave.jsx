@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 export default function SoundWave() {
-  const [muted, setMuted] = useState(false)
+  const [muted, setMuted] = useState(true)
   const playing = !muted
   return (
     <div

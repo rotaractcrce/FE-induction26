@@ -5,7 +5,7 @@ export default function ContentAccount({
   name,
   email,
   modelValue = true,
-  showFrequencyOption = true,
+  showFrequencyOption = false,
   handleSubmit,
   onUpdateName,
   onUpdateEmail,

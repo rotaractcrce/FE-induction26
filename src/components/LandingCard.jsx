@@ -114,8 +114,9 @@ export default function App() {
   const hasHeader = !!active.header
   const headerTitle = active.header?.title?.()
 
-  return (
+return (
     <div className="index">
+      <div className="dkp-gl" />
       <div className={`landing-card-overlay ${mode !== 'default' ? 'blur' : ''}`} />
       {!loaded ? (
         <div className="landing-card-container">

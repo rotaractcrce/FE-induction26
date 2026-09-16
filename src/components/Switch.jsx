@@ -1,4 +1,4 @@
-export default function Switch({ modelValue, onChange, styleClass = '' }) {
+export default function Switch({ modelValue, onChange, styleClass }) {
   const checked = !!modelValue
   return (
     <div className={`switch-container ${styleClass}`}>

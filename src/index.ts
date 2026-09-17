@@ -106,7 +106,7 @@ admin.get("/", async (c) => {
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
           <meta name="robots" content="noindex, nofollow" />
-          <title>Admin PIN — Rotaract CRCE</title>
+          <title>Admin PIN | Rotaract CRCE</title>
           <link rel="stylesheet" href="/assets/fonts.css" />
           <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
           <style>
@@ -445,7 +445,7 @@ admin.get("/", async (c) => {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="robots" content="noindex, nofollow" />
-        <title>Waiting List — Rotaract CRCE Admin</title>
+        <title>Waiting List | Rotaract CRCE Admin</title>
         <link rel="stylesheet" href="/assets/fonts.css" />
         <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
         <style>

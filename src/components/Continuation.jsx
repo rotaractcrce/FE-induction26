@@ -2,7 +2,7 @@ export default function Continuation({ onRequestAccess }) {
   return (
     <div id="scroll-intro-continuation" className="scroll-intro-continuation" hidden>
 
-  <section className="scroll-intro-below" id="scroll-intro-below-after-cards" aria-labelledby="scroll-intro-below-leaders-heading">
+  <section className="scroll-intro-below" id="studio" aria-labelledby="scroll-intro-below-leaders-heading">
     <div className="scroll-intro-below__inner">
       <h2 className="sr-only" id="scroll-intro-below-leaders-heading">Experience and leadership</h2>
       <div id="scroll-intro-below-statement-leaders" className="scroll-intro-below__statements">

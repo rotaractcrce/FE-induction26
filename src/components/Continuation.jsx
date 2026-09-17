@@ -154,34 +154,6 @@ export default function Continuation({ onRequestAccess }) {
       <div id="scroll-intro-below-statement-leaders" className="scroll-intro-below__statements">
         <p className="scroll-intro-below__statement">We are two design leaders who&rsquo;ve spent years leading teams and launching products used by millions. And now we&rsquo;re building our own apps, tools, and brands, and we treat each one as a way to sharpen our craft.</p>
       </div>
-      <aside className="site-awards site-awards--leaders" aria-label="Awards and recognition">
-        <div className="site-awards__copy">
-          <p className="site-awards__line">AI moves our work forward.</p>
-          <p className="site-awards__line site-awards__line--accent">Vision still earns the badge.</p>
-        </div>
-        <ul className="site-awards__list">
-          <li className="site-awards__item">
-            <a className="site-awards__link" href="https://www.cssdesignawards.com/" target="_blank" rel="noopener noreferrer">
-              <img className="site-awards__badge" src="/assets/awards/cssda-special-kudos-white-2.svg" width="90" height="90" loading="lazy" decoding="async" alt="CSS Design Awards: Special Kudos" />
-            </a>
-          </li>
-          <li className="site-awards__item">
-            <a className="site-awards__link" href="https://www.cssdesignawards.com/" target="_blank" rel="noopener noreferrer">
-              <img className="site-awards__badge" src="/assets/awards/cssda-best-ui-white-2.svg" width="90" height="90" loading="lazy" decoding="async" alt="CSS Design Awards: Best UI Design" />
-            </a>
-          </li>
-          <li className="site-awards__item">
-            <a className="site-awards__link" href="https://www.cssdesignawards.com/" target="_blank" rel="noopener noreferrer">
-              <img className="site-awards__badge" src="/assets/awards/cssda-best-ux-white-2.svg" width="90" height="90" loading="lazy" decoding="async" alt="CSS Design Awards: Best UX Design" />
-            </a>
-          </li>
-          <li className="site-awards__item">
-            <a className="site-awards__link" href="https://www.cssdesignawards.com/" target="_blank" rel="noopener noreferrer">
-              <img className="site-awards__badge" src="/assets/awards/cssda-best-inn-white-2.svg" width="90" height="90" loading="lazy" decoding="async" alt="CSS Design Awards: Best Innovation" />
-            </a>
-          </li>
-        </ul>
-      </aside>
     </div>
   </section>
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import CustomCursor from "./components/CustomCursor";
 import TopHeader from "./components/TopHeader";
-import SiteMeta from "./components/SiteMeta";
 import Stage from "./components/Stage";
 import Continuation from "./components/Continuation";
 import Awwwards from "./components/Awwwards";
@@ -20,7 +19,6 @@ const SCRIPTS = [
   "/assets/overture-ripple.js",
   "/assets/mobile-top-nav.js",
   "/assets/custom-cursor.js",
-  "/assets/site-meta-panel.js",
 ];
 
 function loadScript(src) {
@@ -57,7 +55,6 @@ export default function App() {
     <>
       <CustomCursor />
       <TopHeader />
-      <SiteMeta />
       <Stage />
       <Continuation onRequestAccess={() => setLeadOpen(true)} />
       <Awwwards />

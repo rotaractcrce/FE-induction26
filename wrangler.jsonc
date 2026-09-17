@@ -4,6 +4,7 @@
   //   2. `npx wrangler secret put ADMIN_USER` / `npx wrangler secret put ADMIN_PASSWORD`
   //      (the vars below are dev-only fallbacks — remove them before going live)
   "name": "fe-induction26",
+  "account_id": "407e4e2e42975af1179067fb19cba01e",
   "main": "src/index.ts",
   "compatibility_date": "2025-09-01",
   "assets": {
@@ -15,11 +16,7 @@
     {
       "binding": "DB",
       "database_name": "fe-induction26",
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_id": "0da9610f-bd85-414a-b41c-38f17a0bf722"
     }
-  ],
-  "vars": {
-    "ADMIN_USER": "admin",
-    "ADMIN_PASSWORD": "ouro-dev-admin"
-  }
+  ]
 }

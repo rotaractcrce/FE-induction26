@@ -806,20 +806,20 @@ function attachHlCharExitHideAfterTransform(c) {
   }
   /** Primary hero: built in JS so mobile can use more .hl-line rows (must stay in sync with templates). */
   var PRIMARY_LINE_SPECS_DESKTOP = [
-    [{ k: "t", v: "Experimenting" }],
-    [{ k: "t", v: "with new methods" }],
+    [{ k: "t", v: "always stepping" }],
+    [{ k: "t", v: "outside your" }],
     [
-      { k: "t", v: "of " },
-      { k: "a", v: "creation." },
+      { k: "a", v: "comfort " },
+      { k: "t", v: "zone" },
     ],
   ];
   var PRIMARY_LINE_SPECS_MOBILE = [
-    [{ k: "t", v: "Experimenting" }],
-    [{ k: "t", v: "with new" }],
-    [{ k: "t", v: "methods" }],
+    [{ k: "t", v: "always" }],
+    [{ k: "t", v: "stepping" }],
+    [{ k: "t", v: "outside your" }],
     [
-      { k: "t", v: "of " },
-      { k: "a", v: "creation." },
+      { k: "a", v: "comfort " },
+      { k: "t", v: "zone" },
     ],
   ];
   var primaryHeadlineBpMq = window.matchMedia("(max-width: 600px)");
@@ -935,18 +935,11 @@ function attachHlCharExitHideAfterTransform(c) {
   var thirdBgVid = null;
   var TA_CYCLE_HOLD = 4200;
   var TA_CYCLE_TRANS = 1800;
-  var TA_CYCLE_SRCS = [
-    "statue.mp4",
-    "wyatt.mp4",
-    "orb.mp4",
-    "cycle-2.mp4",
-    "cycle-4.mp4",
-    "cycle-3.mp4",
-  ];
+  var TA_CYCLE_SRCS = ["hero-ring.webm"];
   var TA_STATUE_IDX = TA_CYCLE_SRCS.indexOf("statue.mp4");
   var TA_ORB_IDX = TA_CYCLE_SRCS.indexOf("orb.mp4");
   var TA_CYCLE_EYE_IDX = TA_CYCLE_SRCS.indexOf("cycle-4.mp4");
-  var taCycleIdx = TA_CYCLE_EYE_IDX;
+  var taCycleIdx = 0;
   var taCycleFade = 0;
   var taCycleStart = 0;
   var taCycleTransDur = 1800;
@@ -1222,7 +1215,7 @@ function attachHlCharExitHideAfterTransform(c) {
     if (!thirdRingCanvas) return;
     ensureThirdRingVideos();
     thirdRingResize();
-    taCycleIdx = TA_CYCLE_EYE_IDX;
+    taCycleIdx = 0;
     taCycleFade = 0;
     taCycleStart = performance.now();
     taCycleTransDur = TA_CYCLE_TRANS;
@@ -1609,17 +1602,17 @@ function attachHlCharExitHideAfterTransform(c) {
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
       var lettersWm = svgElWm.querySelectorAll(".wm-l");
       if (lettersWm.length) {
-        var VWWm = 2374,
+        var VWWm = 2728,
           VHWm = 433;
         var restsWm = [
-          [165, 268],
-          [329 + 165, 110.669 + 158],
-          [674.518 + 120, 110.669 + 157],
-          [906.7647 + 165, 268],
-          [1336.7647 + 56, 220],
-          [1447.7647 + 165, 268],
-          [1773.7647 + 165, 217],
-          [2068.7647 + 153, 268],
+          [152.1, 270.3],
+          [498.9, 268.0],
+          [839.1, 273.6],
+          [1182.7, 271.3],
+          [1533.0, 270.3],
+          [1883.3, 271.3],
+          [2231.5, 268.6],
+          [2562.8, 273.6],
         ];
         var SPRINGWm = 0.035,
           DAMPWm = 0.88,
@@ -1705,19 +1698,19 @@ function attachHlCharExitHideAfterTransform(c) {
       }
     })();
     var dprWm = Math.min(window.devicePixelRatio || 1, 2);
-    var VWWm2 = 2374,
+    var VWWm2 = 2728,
       VHWm2 = 433,
       TOP_PAD_CSS_WM = 160,
       BOTTOM_PAD_CSS_WM = 0;
     var staticsWm = [
-      { sx: 0, sy: 103 },
-      { sx: 329, sy: 110.669 },
-      { sx: 674.518, sy: 110.669 },
-      { sx: 906.7647, sy: 103 },
-      { sx: 1336.7647, sy: 7, isRect: true, rw: 111, rh: 426 },
-      { sx: 1447.7647, sy: 103 },
-      { sx: 1773.7647, sy: 0 },
-      { sx: 2068.7647, sy: 102 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
+      { sx: 0, sy: 0 },
     ];
     var wmlWm = svgElWm.querySelectorAll(".wm-l");
     var pathsWm = Array.from(wmlWm).map(function (el, i) {
@@ -1744,9 +1737,8 @@ function attachHlCharExitHideAfterTransform(c) {
     if (!window.__bgVid) window.__bgVid = vidWm;
     /* No bottom trim - index trims slack for a tighter crop; at full width it clipped descenders (S, B). */
     var VB_BOTTOM_TRIM_WM = 0;
-    /* Must match inner <g transform="... scale(...)"> on the R .wm-l (canvas mask uses path only). */
-    /* Match R cap height to U (322.331) - was 0.978, which made R visibly shorter. */
-    var WM_R_PATH_SCALE = 322.331 / 322;
+    /* Letter paths are already in final viewBox units (generated ROTARACT mark). */
+    var WM_R_PATH_SCALE = 1;
 
     function resizeWm() {
       var r = svgElWm.getBoundingClientRect();
@@ -1868,7 +1860,7 @@ function attachHlCharExitHideAfterTransform(c) {
         } else if (pathsWm[i]) {
           var ps = i === 2 ? WM_R_PATH_SCALE : 1;
           mctxWm.scale(scaleX * ps, scaleY * ps);
-          mctxWm.fill(pathsWm[i]);
+          mctxWm.fill(pathsWm[i], "evenodd");
         }
         mctxWm.restore();
       });
@@ -3281,6 +3273,10 @@ function attachHlCharExitHideAfterTransform(c) {
     var logo = document.querySelector(
       ".scroll-intro-header-strip .scroll-intro-logo",
     );
+    /* RC header: wordmark tracks with the gear so the brand moves as one. */
+    var wordmark = document.querySelector(
+      ".scroll-intro-header-strip .rc-wordmark",
+    );
     if (!logo || !thirdAct) {
       return;
     }
@@ -3290,17 +3286,20 @@ function attachHlCharExitHideAfterTransform(c) {
     ) {
       root.classList.remove("scroll-intro-logo-past-third-act");
       logo.style.removeProperty("transform");
+      if (wordmark) wordmark.style.removeProperty("transform");
       return;
     }
     var r = thirdAct.getBoundingClientRect();
     if (r.bottom <= 0) {
       root.classList.add("scroll-intro-logo-past-third-act");
       logo.style.removeProperty("transform");
+      if (wordmark) wordmark.style.removeProperty("transform");
       return;
     }
     root.classList.remove("scroll-intro-logo-past-third-act");
     var y = Math.min(0, r.top);
     logo.style.transform = "translateY(" + y + "px)";
+    if (wordmark) wordmark.style.transform = "translateY(" + y + "px)";
   }
   function scheduleNavThirdRedOverlap() {
     requestAnimationFrame(function () {

@@ -206,3 +206,88 @@
   opacity: 1;
   translate: 2px -2px;
 }
+
+/* center the footer link rows */
+.wordmark-footer-nav--rows {
+  justify-content: center !important;
+  text-align: center;
+  padding-inline: clamp(16px, 4vw, 32px) !important;
+}
+.wordmark-footer-nav--rows .wordmark-footer-row {
+  justify-content: center;
+}
+
+/* top row links: orange + slightly larger */
+.wordmark-footer-row:first-child a {
+  color: #ff1b00;
+  font-size: clamp(15px, 1.9vw, 18px);
+}
+
+/* RC gear header mark: PNG alpha as mask, painted in currentColor so the
+   header black -> orange -> cream phases recolor it automatically. */
+.rc-logo-mark {
+  display: block;
+  height: var(--scroll-intro-logo-h, clamp(20px, 4.1vw, 28px));
+  aspect-ratio: 1 / 1;
+  background-color: currentColor;
+  -webkit-mask-image: url(/assets/rc-logo-mark.png);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url(/assets/rc-logo-mark.png);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+/* header: RC gear left (old terminal slot, on the site margin), bigger.
+   header. prefix beats the base strip rule; grid-row pins a single row. */
+header.scroll-intro-header-strip .scroll-intro-logo--left {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
+}
+/* header: shared mark height so 2-line wordmark matches the gear */
+.scroll-intro-header-strip {
+  --rc-mark-h: clamp(44px, 11vw, 64px);
+}
+.scroll-intro-logo--left .rc-logo-mark {
+  height: var(--rc-mark-h);
+}
+.scroll-intro-header-strip .rc-wordmark {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  height: var(--rc-mark-h);
+  justify-content: center;
+  /* optical: Modak caps sit high in the em box - nudge down to center on the gear */
+  box-sizing: border-box;
+  padding-top: calc(var(--rc-mark-h) * 0.07);
+  font-family: "Modak", system-ui, sans-serif;
+  font-size: calc(var(--rc-mark-h) / 2);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  transition: color 0.35s var(--ease-out-flow);
+}
+.rc-wordmark > span {
+  display: block;
+}
+html.scroll-intro-scrollable.scroll-intro-logo-past-third-act .rc-wordmark {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+html.nav-hero-second-hl:not(.nav-over-third-red) .rc-wordmark {
+  color: var(--nav-second-hl-accent);
+}
+html.nav-over-third-red .rc-wordmark {
+  color: var(--bg);
+}

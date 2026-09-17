@@ -36,7 +36,7 @@ export default function Stage() {
       <div className="third-act-video-plane">
         <div className="third-act-video-shell" id="third-act-video-shell" aria-hidden="true">
           <div className="third-act-video-ring">
-            <canvas id="third-act-ring-canvas" className="third-act-ring-canvas" aria-hidden="true"></canvas>
+            <canvas id="third-act-ring-canvas" className="third-act-ring-canvas" aria-hidden="true" style={{ clipPath: "url(#third-act-o-clip)", WebkitClipPath: "url(#third-act-o-clip)" }}></canvas>
           </div>
         </div>
       </div>

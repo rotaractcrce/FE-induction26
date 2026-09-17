@@ -5,7 +5,7 @@ import SiteMeta from "./components/SiteMeta";
 import Stage from "./components/Stage";
 import Continuation from "./components/Continuation";
 import Awwwards from "./components/Awwwards";
-import LeadForm from "./components/LeadForm";
+import LeadForm from "./components/WaitingList";
 
 /* The original site's enhancement scripts expect the full DOM to exist and
    enhance it imperatively. We render the identical markup in React, then load

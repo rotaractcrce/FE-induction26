@@ -1,0 +1,168 @@
+/* WaitingList card — Ouro palette: cream #DDDBD6 / ink #111 / red #FF1B00 */
+
+.wl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
+  animation: wl-fade 0.25s ease both;
+}
+
+.wl-card {
+  position: fixed;
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(340px, calc(100vw - 40px));
+  background: #dddbd6;
+  color: #111;
+  border-radius: 22px;
+  padding: 26px 24px;
+  font-family: "Space Grotesk", sans-serif;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+  animation: wl-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.wl-card.wl-entry-hidden {
+  transform: translate(-50%, -46%) scale(0.92);
+  opacity: 0;
+}
+
+@keyframes wl-pop {
+  from { transform: translate(-50%, -46%) scale(0.92); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1);     opacity: 1; }
+}
+@keyframes wl-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.wl-body { min-height: 150px; }
+
+/* teaser */
+.wl-teaser { text-align: center; }
+
+/* soundwave — a nod to the original widget, in Ouro red */
+.wl-soundwave {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  margin-bottom: 10px;
+}
+.wl-soundwave span {
+  width: 3px;
+  border-radius: 2px;
+  height: 8px;
+  background: #ff1b00;
+  animation: wl-wave 1.1s ease-in-out infinite alternate;
+}
+.wl-soundwave span:nth-child(1) { animation-delay: 0.10s; }
+.wl-soundwave span:nth-child(2) { animation-delay: 0.30s; }
+.wl-soundwave span:nth-child(3) { animation-delay: 0.20s; }
+.wl-soundwave span:nth-child(4) { animation-delay: 0.40s; }
+.wl-soundwave span:nth-child(5) { animation-delay: 0.15s; }
+.wl-soundwave span:nth-child(6) { animation-delay: 0.35s; }
+.wl-soundwave span:nth-child(7) { animation-delay: 0.25s; }
+@keyframes wl-wave {
+  from { height: 4px; }
+  to   { height: 24px; }
+}
+
+.wl-title {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #111;
+}
+.wl-copy {
+  margin: 0 0 16px;
+  font-size: 13.5px;
+  color: #555;
+  line-height: 1.5;
+}
+.wl-copy strong { color: #111; }
+
+.wl-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  background: #ff1b00;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.wl-cta svg { width: 16px; height: 16px; }
+.wl-cta:disabled { opacity: 0.6; cursor: default; }
+.wl-cta:hover:not(:disabled) { background: #e61800; }
+.wl-cta:active:not(:disabled) { transform: scale(0.98); }
+
+/* header (register state) */
+.wl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -6px -4px 14px;
+}
+.wl-header-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #777;
+}
+.wl-header-action {
+  border: 0;
+  background: none;
+  padding: 6px;
+  cursor: pointer;
+  color: #111;
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+.wl-header-action:hover { opacity: 1; }
+.wl-header-action--ok { color: #00a04a; opacity: 0.75; }
+.wl-header-action--ok:hover { opacity: 1; }
+.wl-header-action svg { width: 18px; height: 18px; display: block; }
+
+/* form */
+.wl-form { display: block; }
+.wl-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 8px;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  background: #fff;
+  font: inherit;
+  font-size: 15px;
+  color: #111;
+  transition: border-color 0.15s ease;
+}
+.wl-input::placeholder { color: #9a9a9a; }
+.wl-input:focus { outline: none; border-color: #ff1b00; }
+.wl-error { margin: -4px 0 8px 2px; color: #ff1b00; font-size: 12.5px; }
+
+/* done state */
+.wl-done { text-align: center; padding-top: 6px; }
+.wl-done-check {
+  width: 40px;
+  height: 40px;
+  color: #00a04a;
+  background: rgba(0, 160, 74, 0.1);
+  border-radius: 50%;
+  padding: 9px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}

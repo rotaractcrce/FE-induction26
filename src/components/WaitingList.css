@@ -166,3 +166,18 @@
   box-sizing: border-box;
   margin-bottom: 8px;
 }
+
+/* footer trigger button */
+.wl-footer-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 16px;
+  background: #ff1b00;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.wl-footer-btn:hover { background: #e61800; }

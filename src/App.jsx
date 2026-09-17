@@ -13,11 +13,6 @@ const SCRIPTS = [
   "/assets/second-lullaby.js",
   "/assets/hero-intro.js",
   "/assets/ouro-site-bootstrap.js",
-  "/assets/vendor/flubber.min.js",
-  "/assets/hcard-atlas-morph.js",
-  "/assets/hcard-nota-morph.js",
-  "/assets/overture-ripple.js",
-  "/assets/mobile-top-nav.js",
   "/assets/custom-cursor.js",
 ];
 

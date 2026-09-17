@@ -6,6 +6,7 @@
   "name": "fe-induction26",
   "account_id": "407e4e2e42975af1179067fb19cba01e",
   "main": "src/index.ts",
+  "routes": [{ "pattern": "apply.rotaractcrce.com", "custom_domain": true }],
   "compatibility_date": "2025-09-01",
   "assets": {
     "directory": "./dist",

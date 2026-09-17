@@ -1,0 +1,421 @@
+*, :after, :before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html, #root {
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #bec2c4;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-x: none;
+}
+
+.landing-card-overlay {
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transition: backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), -webkit-backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100vw;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.landing-card-overlay.blur {
+  -webkit-backdrop-filter: blur(60px);
+  backdrop-filter: blur(60px);
+  background-color: rgba(0, 0, 0, 0.15);
+  pointer-events: all;
+}
+
+.landing-card-container {
+  position: relative;
+  z-index: 2;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-card-container.entry-hidden {
+  transform: translateY(100vh) !important;
+}
+
+.landing-card-container.state-default {
+  transform: translateY(160px);
+}
+
+.landing-card-container.state-register {
+  transform: translateY(0px);
+}
+
+
+.landing-card-header {
+  align-items: center;
+  color: #2d2d2d;
+  display: flex;
+  gap: 5px;
+  height: 26px;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-left: 30px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: -36px;
+  transition: opacity .2s ease;
+  width: calc(100% - 60px);
+}
+
+.landing-card-header.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.landing-card-header .header-main {
+  align-items: center;
+  background-color: #2d2d2d;
+  border-radius: 13px;
+  color: #fff;
+  display: flex;
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.landing-card-header .header-action {
+  align-items: center;
+  background-color: #ddd;
+  border-radius: 50%;
+  display: flex;
+  flex-shrink: 0;
+  height: 26px;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  width: 26px;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s ease;
+}
+
+.landing-card-header .header-action.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.landing-card-header .header-action:hover {
+  background-color: #ccc;
+}
+
+.landing-card {
+  pointer-events: all;
+  --accent: #b4b4b4;
+  background-color: #ddd;
+  border-radius: 25px;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.landing-card * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.landing-card-content {
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 50%;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.card-view-fade {
+  animation: cardFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.info-button {
+  align-items: center;
+  background-color: #b5adad;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 12px;
+  font-weight: 800;
+  height: 26px;
+  justify-content: center;
+  left: 10px;
+  position: absolute;
+  top: 10px;
+  width: 26px;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.info-button:hover {
+  background-color: #949494;
+}
+
+.action-left {
+  left: 42px;
+  position: absolute;
+  top: 10px;
+}
+
+.action {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.soundwave {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+  height: 26px;
+  justify-content: center;
+}
+
+.soundwave .line {
+  background-color: #a4a4a4;
+  border-radius: 1.5px;
+  height: 12px;
+  width: 3px;
+  animation: soundwave 1.2s ease-in-out infinite alternate;
+}
+
+.soundwave .line:nth-child(1) { animation-delay: 0.1s; }
+.soundwave .line:nth-child(2) { animation-delay: 0.3s; }
+.soundwave .line:nth-child(3) { animation-delay: 0.2s; }
+.soundwave .line:nth-child(4) { animation-delay: 0.4s; }
+.soundwave .line:nth-child(5) { animation-delay: 0.15s; }
+.soundwave .line:nth-child(6) { animation-delay: 0.35s; }
+.soundwave .line:nth-child(7) { animation-delay: 0.25s; }
+
+@keyframes soundwave {
+  0% { height: 4px; }
+  50% { height: 16px; }
+  100% { height: 8px; }
+}
+
+.landing-card-title {
+  align-items: center;
+  color: #2d2d2d;
+  display: flex;
+  flex: 1;
+  font-size: 28px;
+  font-weight: 800;
+  justify-content: center;
+  letter-spacing: -1px;
+  margin: 30px 0;
+  padding-top: 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.landing-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+}
+
+.landing-card-actions .button, .landing-card-actions button {
+  align-items: center;
+  border-radius: 20px;
+  color: #fff;
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  height: 55px;
+  justify-content: space-between;
+  letter-spacing: -.25px;
+  padding: 5px 20px;
+  text-decoration: none;
+  transition: transform .05s linear, background-color .1s linear;
+  border: 0;
+  cursor: pointer;
+}
+
+.landing-card-actions .button:active, .landing-card-actions button:active {
+  transform: scale(.98);
+}
+
+.landing-card-actions .button.primary, .landing-card-actions button.primary {
+  background-color: #2d2d2d;
+  color: #fff;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 7.5px;
+}
+
+input {
+  background-color: #fff;
+  border: 0;
+  border-radius: 20px;
+  color: #111;
+  display: flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  height: 55px;
+  letter-spacing: -.25px;
+  opacity: .5;
+  padding: 5px 20px;
+  width: 100%;
+  transition: opacity .1s linear, background-color .1s linear;
+}
+
+input::-webkit-input-placeholder {
+  color: #6f6f6f;
+  font-weight: 700;
+}
+
+input::-moz-placeholder {
+  color: #6f6f6f;
+  font-weight: 700;
+}
+
+input::placeholder {
+  color: #6f6f6f;
+  font-weight: 700;
+}
+
+input:focus {
+  background-color: #fff;
+  color: #111;
+  opacity: 1;
+  outline: none;
+}
+
+input.hidden {
+  display: none;
+}
+
+.switch-container {
+  height: 26px;
+  position: relative;
+  width: 45.5px;
+}
+
+.switch {
+  height: 100%;
+  opacity: 0!important;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+}
+
+.switch+label {
+  cursor: pointer;
+  display: block;
+  outline: none;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.switch--flat+label {
+  background-color: #eee;
+  border-radius: 13px;
+  height: 26px;
+  padding: 2px;
+  transition: background-color .1s linear;
+  width: 45.5px;
+}
+
+.dark .switch--flat+label {
+  background-color: #ddd;
+}
+
+.switch--flat+label:after, .switch--flat+label:before {
+  content: "";
+  display: block;
+  height: 26px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 26px;
+}
+
+.switch--flat+label:after {
+  background-color: var(--accent);
+  border-radius: 50%;
+  transition: transform .1s linear, background-color .1s linear;
+  width: 26px;
+}
+
+.switch--flat:checked+label:after {
+  background-color: #333;
+  transform: translate(75%);
+}
+
+.switch--flat:focus+label {
+  outline: 2px solid #fff;
+}
+
+.block {
+  align-items: center;
+  background-color: #ababab80;
+  border-radius: 20px;
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  gap: 10px;
+  height: 55px;
+  justify-content: center;
+  letter-spacing: -.25px;
+  opacity: .5;
+  padding: 5px 20px;
+  width: 100%;
+  --accent: #333;
+}
+
+.flex-fill {
+  flex: 1;
+}
+
+.label {
+  color: #6f6f6f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 12px;
+}

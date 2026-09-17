@@ -7,6 +7,7 @@ type Env = {
     DB: D1Database;
     ASSETS: Fetcher;
     ADMIN_PIN: string;
+    ADMIN_SESSION_SECRET: string;
   };
 };
 
@@ -72,23 +73,27 @@ app.post("/api/leads", async (c) => {
 
 const admin = new Hono<Env>();
 
-// Session cookie: keyed digest of the PIN, so the token value itself
-// doesn't reveal the PIN and can't be forged without it.
-function tokenFor(pin: string): string {
-  let h = 5381;
-  const msg = "admin-session-v1|" + pin;
-  for (let i = 0; i < msg.length; i++) {
-    h = ((h << 5) + h + msg.charCodeAt(i)) >>> 0;
-  }
-  return "v1-" + h.toString(16);
+// Session cookie: HMAC-SHA256 keyed by a server-only secret, so the token
+// can't be forged offline even though the scheme is public. PIN rotation or
+// secret rotation invalidates all existing sessions.
+async function tokenFor(c: { env: { ADMIN_SESSION_SECRET: string } }): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode("admin-session-v1|" + c.env.ADMIN_SESSION_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode("ok"));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-function isAuthed(c: { env: { ADMIN_PIN: string } }): boolean {
-  return getCookie(c, "admin_session") === tokenFor(c.env.ADMIN_PIN);
+async function isAuthed(c: any): Promise<boolean> {
+  return (getCookie(c, "admin_session") ?? "") === (await tokenFor(c));
 }
 
 admin.get("/", async (c) => {
-  if (!isAuthed(c)) {
+  if (!(await isAuthed(c))) {
     return c.html(html`<!doctype html>
       <html lang="en">
         <head>
@@ -227,7 +232,7 @@ admin.post("/", async (c) => {
   if (pin !== c.env.ADMIN_PIN) {
     return c.text("Wrong PIN", 401);
   }
-  setCookie(c, "admin_session", tokenFor(pin), {
+  setCookie(c, "admin_session", await tokenFor(c), {
     httpOnly: true,
     secure: true,
     sameSite: "Lax",
@@ -238,7 +243,7 @@ admin.post("/", async (c) => {
 });
 
 admin.get("/export", async (c) => {
-  if (!isAuthed(c)) return c.redirect("/admin");
+  if (!(await isAuthed(c))) return c.redirect("/admin");
   const { results } = await c.env.DB.prepare(
     "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC"
   ).all();

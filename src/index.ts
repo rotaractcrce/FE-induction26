@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { html } from "hono/html";
-import { basicAuth } from "hono/basic-auth";
+import { setCookie, getCookie } from "hono/cookie";
 
 type Env = {
   Bindings: {
     DB: D1Database;
     ASSETS: Fetcher;
-    ADMIN_USER: string;
-    ADMIN_PASSWORD: string;
+    ADMIN_PIN: string;
+    ADMIN_SESSION_SECRET: string;
   };
 };
 
@@ -72,28 +72,76 @@ app.post("/api/leads", async (c) => {
 /* ---------------- admin dashboard ---------------- */
 
 const admin = new Hono<Env>();
-// env vars aren't available at module init, so build the middleware per-request
-admin.use(async (c, next) => {
-  const auth = basicAuth({
-    username: c.env.ADMIN_USER,
-    password: c.env.ADMIN_PASSWORD,
-  });
-  return auth(c, next);
-});
+
+// Session cookie: HMAC-SHA256 keyed by a server-only secret, so the token
+// can't be forged offline even though the scheme is public. PIN rotation or
+// secret rotation invalidates all existing sessions.
+async function tokenFor(c: { env: { ADMIN_SESSION_SECRET: string } }): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode("admin-session-v1|" + c.env.ADMIN_SESSION_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode("ok"));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function isAuthed(c: any): Promise<boolean> {
+  return (getCookie(c, "admin_session") ?? "") === (await tokenFor(c));
+}
 
 admin.get("/", async (c) => {
+  if (!(await isAuthed(c))) {
+    return c.html(html`<!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="robots" content="noindex, nofollow" />
+          <title>Admin — FE-induction26</title>
+          <link rel="stylesheet" href="/assets/fonts.css" />
+          <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+          <style>
+            :root { color-scheme: light; }
+            body { margin: 0; display: grid; place-items: center; min-height: 100vh; background: #dddbd6; color: #111; font: 15px/1.5 "Space Grotesk", sans-serif; }
+            .gate { text-align: center; }
+            .mark { width: 54px; height: 54px; border-radius: 50%; background: #ff1b00; margin: 0 auto 18px; position: relative; }
+            .mark::after { content: ""; position: absolute; inset: 14px; border-radius: 50%; background: #dddbd6; }
+            h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 4px; }
+            p.hint { color: #777; font-size: 13px; margin: 0 0 22px; }
+            form { display: flex; gap: 10px; align-items: center; justify-content: center; }
+            input[type="password"] { font: inherit; font-size: 20px; padding: 10px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,.18); background: #fff; color: #111; width: 130px; text-align: center; letter-spacing: 6px; }
+            input[type="password"]:focus { outline: none; border-color: #ff1b00; }
+            button { font: inherit; font-weight: 600; padding: 11px 22px; border: 0; border-radius: 999px; background: #ff1b00; color: #fff; cursor: pointer; }
+            button:hover { background: #e61800; }
+          </style>
+        </head>
+        <body>
+          <div class="gate">
+            <div class="mark" aria-hidden="true"></div>
+            <h1>Admin</h1>
+            <p class="hint">Rotaract CRCE — waiting list</p>
+            <form method="post" action="/admin">
+              <label for="pin">PIN</label>
+              <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="off" autofocus required />
+              <button type="submit">Enter</button>
+            </form>
+          </div>
+        </body>
+      </html>`);
+  }
+
+  // capped read: dashboard shows the latest 1000 (export is the full dump)
   const { results } = await c.env.DB.prepare(
-    "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC"
+    "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC LIMIT 1000"
   ).all();
 
   const rows = (results as Lead[]) ?? [];
 
-  const esc = (s: unknown) =>
-    String(s ?? "").replace(
-      /[&<>"']/g,
-      (ch) =>
-        `&#${ch.charCodeAt(0)};`
-    );
+  const esc = (v: unknown) =>
+    String(v ?? "").replace(/[&<>"']/g, (ch) => `&#${ch.charCodeAt(0)};`);
 
   const tableRows =
     rows.length === 0
@@ -117,32 +165,144 @@ admin.get("/", async (c) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="noindex, nofollow" />
         <title>Leads — FE-induction26</title>
+        <link rel="stylesheet" href="/assets/fonts.css" />
+        <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
         <style>
-          :root { color-scheme: dark; }
-          body {
-            margin: 0; padding: 24px; background: #111; color: #eee;
-            font: 14px/1.5 system-ui, sans-serif;
-          }
-          h1 { font-size: 18px; margin: 0 0 4px; }
-          p.count { color: #999; margin: 0 0 20px; }
-          table { border-collapse: collapse; width: 100%; max-width: 900px; }
-          th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #2a2a2a; }
+          :root { color-scheme: light; }
+          body { margin: 0; padding: 40px 24px; background: #dddbd6; color: #111; font: 15px/1.5 "Space Grotesk", sans-serif; }
+          .wrap { max-width: 920px; margin: 0 auto; }
+          header.bar { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+          .mark { width: 34px; height: 34px; border-radius: 50%; background: #ff1b00; position: relative; flex: none; }
+          .mark::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #dddbd6; }
+          h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+          p.count { color: #777; font-size: 13px; margin: 0 0 26px; }
+          .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+          .toolbar input { font: inherit; font-size: 14px; padding: 9px 14px; border-radius: 999px; border: 1.5px solid rgba(0,0,0,.18); background: #fff; color: #111; flex: 1; min-width: 180px; }
+          .toolbar input:focus { outline: none; border-color: #ff1b00; }
+          .toolbar a.btn { text-decoration: none; display: inline-block; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 999px; cursor: pointer; }
+          a.btn--red { background: #ff1b00; color: #fff; }
+          a.btn--red:hover { background: #e61800; }
+          a.btn--ghost { background: transparent; color: #555; border: 1.5px solid rgba(0,0,0,.18); }
+          a.btn--ghost:hover { color: #111; }
+          .card { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+          table { border-collapse: collapse; width: 100%; }
+          th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid #eee; }
           th { color: #999; font-weight: 500; text-transform: uppercase; font-size: 11px; letter-spacing: .05em; }
-          td.empty { color: #777; text-align: center; padding: 32px; }
-          tr:hover td { background: #1a1a1a; }
+          tr:last-child td { border-bottom: 0; }
+          td.empty { color: #777; text-align: center; padding: 40px; }
+          tr:hover td { background: #faf9f7; }
+          @media (max-width: 640px) { th, td { padding: 9px 10px; } }
         </style>
       </head>
       <body>
-        <h1>Collected leads</h1>
-        <p class="count">${rows.length} entr${rows.length === 1 ? "y" : "ies"}</p>
-        <table>
-          <thead>
-            <tr><th>#</th><th>Name</th><th>Email</th><th>Mobile</th><th>Submitted</th></tr>
-          </thead>
-          <tbody>${tableRows}</tbody>
-        </table>
+        <div class="wrap">
+          <header class="bar">
+            <div class="mark" aria-hidden="true"></div>
+            <h1>Waiting list</h1>
+          </header>
+          <p class="count">Rotaract CRCE — ${rows.length} entr${rows.length === 1 ? "y" : "ies"}</p>
+          <div class="toolbar">
+            <input id="q" type="search" placeholder="Search name, email or mobile…" oninput="filterRows(this.value)" />
+            <a class="btn btn--red" href="/admin/export" download>Export CSV</a>
+            <a class="btn btn--ghost" href="/admin/logout">Log out</a>
+          </div>
+          <div class="card">
+            <table id="tbl">
+              <thead>
+                <tr><th>#</th><th>Name</th><th>Email</th><th>Mobile</th><th>Submitted</th></tr>
+              </thead>
+              <tbody>${tableRows}</tbody>
+            </table>
+          </div>
+        </div>
+        <script>
+          function filterRows(q) {
+            q = q.toLowerCase();
+            document.querySelectorAll("#tbl tbody tr").forEach(function (tr) {
+              tr.style.display = tr.innerText.toLowerCase().includes(q) ? "" : "none";
+            });
+          }
+        </script>
       </body>
     </html>`);
+});
+
+admin.post("/", async (c) => {
+  const body = await c.req.parseBody();
+  const pin = String((body as Record<string, unknown>).pin ?? "");
+  const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
+  const now = Math.floor(Date.now() / 1000);
+
+  // brute-force throttle: 1 read per attempt; exponential lockout on repeat fails
+  const row = await c.env.DB.prepare(
+    "SELECT fails, locked_until FROM auth_throttle WHERE ip = ?1"
+  )
+    .bind(ip)
+    .first<{ fails: number; locked_until: number }>();
+  if (row && row.locked_until > now) {
+    return c.text(
+      "Too many attempts. Try again in " + (row.locked_until - now) + "s.",
+      429
+    );
+  }
+
+  if (pin !== c.env.ADMIN_PIN) {
+    const fails = (row?.fails ?? 0) + 1;
+    const lockFor = Math.min(3600, 30 * fails * fails); // 30s, 2m, 4.5m, 8m…
+    await c.env.DB.prepare(
+      `INSERT INTO auth_throttle (ip, fails, locked_until)
+       VALUES (?1, ?2, ?3)
+       ON CONFLICT (ip) DO UPDATE SET fails = ?2, locked_until = ?3`
+    )
+      .bind(ip, fails, now + lockFor)
+      .run();
+    return c.text("Wrong PIN", 401);
+  }
+
+  // correct PIN: clear own row + purge stale ones (bounded table, no cron)
+  await c.env.DB.prepare("DELETE FROM auth_throttle WHERE ip = ?1")
+    .bind(ip)
+    .run();
+  await c.env.DB.prepare("DELETE FROM auth_throttle WHERE locked_until < ?1")
+    .bind(now - 86400)
+    .run();
+
+  setCookie(c, "admin_session", await tokenFor(c), {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+  });
+  return c.redirect("/admin");
+});
+
+admin.get("/export", async (c) => {
+  if (!(await isAuthed(c))) return c.redirect("/admin");
+  const { results } = await c.env.DB.prepare(
+    "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC"
+  ).all();
+  const rows = (results as Lead[]) ?? [];
+  const csv = ["id,name,email,mobile,submitted"]
+    .concat(
+      rows.map((r) =>
+        [r.id, r.name, r.email, r.mobile, r.created_at]
+          .map((v) => '"' + String(v).replace(/"/g, '""') + '"')
+          .join(",")
+      )
+    )
+    .join("\n");
+  return new Response(csv, {
+    headers: {
+      "Content-Type": "text/csv; charset=utf-8",
+      "Content-Disposition": 'attachment; filename="waiting-list.csv"',
+    },
+  });
+});
+
+admin.get("/logout", async (c) => {
+  setCookie(c, "admin_session", "", { maxAge: 0, path: "/" });
+  return c.redirect("/admin");
 });
 
 app.route("/admin", admin);

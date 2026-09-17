@@ -963,7 +963,7 @@ function attachHlCharExitHideAfterTransform(c) {
     if (window.__bgVid) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var v = document.createElement("video");
-    v.src = "bg.mp4";
+    v.src = "assets/media/bg.mp4";
     v.preload = "auto";
     v.muted = true;
     v.loop = true;
@@ -996,7 +996,7 @@ function attachHlCharExitHideAfterTransform(c) {
     thirdBgVid = window.__bgVid;
     if (!thirdBgVid) {
       thirdBgVid = document.createElement("video");
-      thirdBgVid.src = "bg.mp4";
+      thirdBgVid.src = "assets/media/bg.mp4";
       thirdBgVid.preload = "auto";
       thirdBgVid.muted = true;
       thirdBgVid.loop = true;
@@ -1729,7 +1729,7 @@ function attachHlCharExitHideAfterTransform(c) {
       window.__bgVid ||
       (function () {
         var v = document.createElement("video");
-        v.src = "bg.mp4";
+        v.src = "assets/media/bg.mp4";
         v.preload = "auto";
         v.autoplay = true;
         v.muted = true;

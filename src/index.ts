@@ -1,13 +1,12 @@
 import { Hono } from "hono";
 import { html } from "hono/html";
-import { basicAuth } from "hono/basic-auth";
+import { setCookie, getCookie } from "hono/cookie";
 
 type Env = {
   Bindings: {
     DB: D1Database;
     ASSETS: Fetcher;
-    ADMIN_USER: string;
-    ADMIN_PASSWORD: string;
+    ADMIN_PIN: string;
   };
 };
 
@@ -72,28 +71,57 @@ app.post("/api/leads", async (c) => {
 /* ---------------- admin dashboard ---------------- */
 
 const admin = new Hono<Env>();
-// env vars aren't available at module init, so build the middleware per-request
-admin.use(async (c, next) => {
-  const auth = basicAuth({
-    username: c.env.ADMIN_USER,
-    password: c.env.ADMIN_PASSWORD,
-  });
-  return auth(c, next);
-});
+
+// Session cookie: keyed digest of the PIN, so the token value itself
+// doesn't reveal the PIN and can't be forged without it.
+function tokenFor(pin: string): string {
+  let h = 5381;
+  const msg = "admin-session-v1|" + pin;
+  for (let i = 0; i < msg.length; i++) {
+    h = ((h << 5) + h + msg.charCodeAt(i)) >>> 0;
+  }
+  return "v1-" + h.toString(16);
+}
+
+function isAuthed(c: { env: { ADMIN_PIN: string } }): boolean {
+  return getCookie(c, "admin_session") === tokenFor(c.env.ADMIN_PIN);
+}
 
 admin.get("/", async (c) => {
+  if (!isAuthed(c)) {
+    return c.html(html`<!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="robots" content="noindex, nofollow" />
+          <title>Admin — FE-induction26</title>
+          <style>
+            :root { color-scheme: dark; }
+            body { margin: 0; display: grid; place-items: center; min-height: 100vh; background: #111; color: #eee; font: 14px/1.5 system-ui, sans-serif; }
+            form { display: flex; gap: 10px; align-items: center; }
+            input[type="password"] { font-size: 18px; padding: 10px 14px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: #eee; width: 120px; text-align: center; letter-spacing: 4px; }
+            button { padding: 10px 18px; border: 0; border-radius: 999px; background: #ff1b00; color: #fff; font-weight: 600; cursor: pointer; }
+          </style>
+        </head>
+        <body>
+          <form method="post" action="/admin">
+            <label for="pin">PIN</label>
+            <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="off" autofocus required />
+            <button type="submit">Enter</button>
+          </form>
+        </body>
+      </html>`);
+  }
+
   const { results } = await c.env.DB.prepare(
     "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC"
   ).all();
 
   const rows = (results as Lead[]) ?? [];
 
-  const esc = (s: unknown) =>
-    String(s ?? "").replace(
-      /[&<>"']/g,
-      (ch) =>
-        `&#${ch.charCodeAt(0)};`
-    );
+  const esc = (v: unknown) =>
+    String(v ?? "").replace(/[&<>"']/g, (ch) => `&#${ch.charCodeAt(0)};`);
 
   const tableRows =
     rows.length === 0
@@ -143,6 +171,22 @@ admin.get("/", async (c) => {
         </table>
       </body>
     </html>`);
+});
+
+admin.post("/", async (c) => {
+  const body = await c.req.parseBody();
+  const pin = String((body as Record<string, unknown>).pin ?? "");
+  if (pin !== c.env.ADMIN_PIN) {
+    return c.text("Wrong PIN", 401);
+  }
+  setCookie(c, "admin_session", tokenFor(pin), {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+  });
+  return c.redirect("/admin");
 });
 
 app.route("/admin", admin);

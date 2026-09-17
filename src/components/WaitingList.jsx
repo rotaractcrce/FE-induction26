@@ -1,224 +1,155 @@
-import { useEffect, useRef, useState } from 'react'
-
-function Switch({ modelValue, onChange, styleClass = '' }) {
-  const [checked, setChecked] = useState(!!modelValue)
-
-  const handleChange = (e) => {
-    const val = e.target.checked
-    setChecked(val)
-    onChange?.(val)
-  }
-
-  return (
-    <div className={`switch-container ${styleClass}`}>
-      <input
-        className="switch switch--flat"
-        type="checkbox"
-        checked={checked}
-        onChange={handleChange}
-      />
-      <label />
-    </div>
-  )
-}
+import { useEffect, useRef, useState } from "react";
+import "./WaitingList.css";
 
 function SoundWave() {
   return (
-    <div className="soundwave playing">
-      <div className="line" />
-      <div className="line" />
-      <div className="line" />
-      <div className="line" />
-      <div className="line" />
-      <div className="line" />
-      <div className="line" />
+    <div className="wl-soundwave" aria-hidden="true">
+      <span /><span /><span /><span /><span /><span /><span />
     </div>
-  )
+  );
 }
 
-export default function WaitingList({
-  name = '',
-  email = '',
-  modelValue = true,
-  showFrequencyOption = false,
-  initialState = 'default',
-  handleSubmit,
-  onClose,
-  onUpdateName,
-  onUpdateEmail,
-  onUpdateModelValue,
-}) {
-  const [viewState, setViewState] = useState(initialState) // 'default' | 'register'
-  const [mounted, setMounted] = useState(false)
-  const firstInput = useRef(null)
-  const [freq, setFreq] = useState(modelValue)
-  const [internalName, setInternalName] = useState(name)
-  const [internalEmail, setInternalEmail] = useState(email)
+/* Wishlist signup card. Adapted from the original WaitingList widget:
+   two-state card (teaser -> form), header check/close, entry animation —
+   restyled to Ouro's cream/red palette and wired to /api/leads. */
+export default function WaitingList({ onClose }) {
+  const [viewState, setViewState] = useState("default"); // 'default' | 'register' | 'done'
+  const [mounted, setMounted] = useState(false);
+  const [values, setValues] = useState({ name: "", email: "", mobile: "" });
+  const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
+  const firstInput = useRef(null);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    const t = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
 
   useEffect(() => {
-    if (viewState === 'register') {
-      firstInput.current?.focus()
+    if (viewState === "register") firstInput.current?.focus();
+  }, [viewState]);
+
+  const set = (k) => (e) => {
+    setValues((v) => ({ ...v, [k]: e.target.value }));
+    setErrors((er) => ({ ...er, [k]: undefined }));
+  };
+
+  async function submit(e) {
+    e?.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setErrors({});
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrors(data.errors ?? { name: data.error ?? "Something went wrong." });
+      } else {
+        setViewState("done");
+      }
+    } catch {
+      setErrors({ name: "Network error — please try again." });
+    } finally {
+      setSending(false);
     }
-  }, [viewState])
-
-  const effectiveFreq = onUpdateModelValue ? modelValue : freq
-  const effectiveName = onUpdateName ? name : internalName
-  const effectiveEmail = onUpdateEmail ? email : internalEmail
-
-  const handleFormSubmit = (e) => {
-    e?.preventDefault()
-    handleSubmit?.({ name: effectiveName, email: effectiveEmail, frequency: effectiveFreq })
   }
-
-  const containerHeight = viewState === 'default' ? '200px' : showFrequencyOption ? '200px' : '140px'
 
   return (
     <>
-      <div className={`landing-card-overlay ${viewState !== 'default' ? 'blur' : ''}`} />
+      <div className="wl-overlay" onClick={onClose} />
 
       <div
-        className={`landing-card-container ${!mounted ? 'entry-hidden' : ''} state-${viewState}`}
-        style={{ width: '280px', height: containerHeight }}
+        className={`wl-card ${!mounted ? "wl-entry-hidden" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Join the waiting list"
       >
-        <header className={`landing-card-header ${viewState === 'register' ? 'visible' : ''}`}>
-          <button
-            type="button"
-            className="header-action visible"
-            onClick={() => {
-              if (onClose) onClose()
-              else setViewState('default')
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-xicon"
-              style={{ stroke: 'rgb(119, 119, 119)' }}
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </button>
-          <div className="header-main">Join waiting list</div>
-          <button type="button" className="header-action visible" onClick={handleFormSubmit}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-check-icon"
-              style={{ stroke: 'rgb(0, 153, 66)' }}
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          </button>
-        </header>
-
-        <div className="landing-card">
-          {viewState === 'default' ? (
-            <div key="default" className="landing-card-content card-view-fade">
-              <button type="button" className="info-button">
-                i
+        {viewState === "done" ? (
+          <div className="wl-body">
+            <div className="wl-done">
+              <svg className="wl-done-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              <h3 className="wl-title">You&rsquo;re on the list.</h3>
+              <p className="wl-copy">
+                We&rsquo;ll reach out to <strong>{values.email}</strong> when early access opens.
+              </p>
+              <button type="button" className="wl-cta" onClick={onClose}>
+                Done
               </button>
-
-              <div className="action-left">
-                <SoundWave />
-              </div>
-
-              <div className="action">
-                <Switch styleClass="dark" />
-              </div>
-
-              <div className="landing-card-title">Desktop.fm</div>
-
-              <div className="landing-card-actions">
-                <button
-                  type="button"
-                  className="primary"
-                  onClick={() => setViewState('register')}
-                >
-                  <div>Join the waiting list</div>
-                  <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-chevron-right-icon"
-                      style={{ position: 'relative', right: '-5px' }}
-                    >
-                      <path d="m9 18 6-6-6-6" />
-                    </svg>
-                  </div>
-                </button>
-              </div>
             </div>
-          ) : (
-            <div key="register" className="landing-card-content card-view-fade">
-              <form onSubmit={handleFormSubmit}>
-                <input
-                  ref={firstInput}
-                  placeholder="Type your name..."
-                  value={effectiveName}
-                  onChange={(e) => {
-                    setInternalName(e.target.value)
-                    onUpdateName?.(e.target.value)
-                  }}
-                />
-                <input
-                  placeholder="Type your email..."
-                  type="email"
-                  value={effectiveEmail}
-                  onChange={(e) => {
-                    setInternalEmail(e.target.value)
-                    onUpdateEmail?.(e.target.value)
-                  }}
-                />
-                <input type="submit" className="hidden" />
-                {showFrequencyOption ? (
-                  <div className="block">
-                    <div className="label">
-                      {effectiveFreq
-                        ? 'Send me all progress updates'
-                        : 'Only contact me for access related notifications'}
-                    </div>
-                    <div className="flex-fill" />
-                    <Switch
-                      modelValue={effectiveFreq}
-                      onChange={(v) => {
-                        if (onUpdateModelValue) onUpdateModelValue(v)
-                        else setFreq(v)
-                      }}
-                      styleClass="dark"
-                    />
-                  </div>
-                ) : null}
-              </form>
+          </div>
+        ) : viewState === "default" ? (
+          <div className="wl-body">
+            <div className="wl-teaser">
+              <SoundWave />
+              <h3 className="wl-title">Nota</h3>
+              <p className="wl-copy">
+                An OS-native app for reviewing video footage, logging moments, and finding what matters.
+              </p>
+              <button type="button" className="wl-cta" onClick={() => setViewState("register")}>
+                <span>Join the waiting list</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="wl-body">
+            <header className="wl-header">
+              <button type="button" className="wl-header-action" onClick={onClose} aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+              <span className="wl-header-label">Join waiting list</span>
+              <button type="button" className="wl-header-action wl-header-action--ok" onClick={submit} aria-label="Submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </button>
+            </header>
+            <form className="wl-form" onSubmit={submit}>
+              <input
+                ref={firstInput}
+                className="wl-input"
+                placeholder="Type your name..."
+                value={values.name}
+                onChange={set("name")}
+                autoComplete="name"
+              />
+              {errors.name && <p className="wl-error">{errors.name}</p>}
+              <input
+                className="wl-input"
+                placeholder="Type your email..."
+                type="email"
+                value={values.email}
+                onChange={set("email")}
+                autoComplete="email"
+              />
+              {errors.email && <p className="wl-error">{errors.email}</p>}
+              <input
+                className="wl-input"
+                placeholder="Mobile number..."
+                type="tel"
+                value={values.mobile}
+                onChange={set("mobile")}
+                autoComplete="tel"
+              />
+              {errors.mobile && <p className="wl-error">{errors.mobile}</p>}
+              <button type="submit" className="wl-cta" disabled={sending}>
+                <span>{sending ? "Sending…" : "Request access"}</span>
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </>
-  )
+  );
 }

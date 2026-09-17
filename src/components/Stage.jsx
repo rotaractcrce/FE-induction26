@@ -10,26 +10,6 @@ export default function Stage() {
 </svg>
 
 <div className="stage" id="stage" role="presentation">
-  <a
-    href="https://www.cssdesignawards.com/"
-    className="stage-corner-badge stage-corner-badge--fixed stage-corner-badge--first"
-    id="stage-corner-badge-first"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="CSS Design Awards: Special Kudos"
-  >
-    <img src="/assets/awards/cssda-special-kudos-blk.svg" width="90" height="90" alt="" decoding="async" />
-  </a>
-  <a
-    href="https://www.cssdesignawards.com/"
-    className="stage-corner-badge stage-corner-badge--fixed stage-corner-badge--second"
-    id="stage-corner-badge-second"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="CSS Design Awards: Special Kudos"
-  >
-    <img src="/assets/awards/cssda-special-kudos-red.svg" width="90" height="90" alt="" decoding="async" />
-  </a>
   <div className="second-hl-particles-wrap" id="second-hl-particles-wrap" aria-hidden="true">
     <canvas id="second-hl-particles-canvas" width="300" height="300"></canvas>
   </div>
@@ -81,16 +61,6 @@ export default function Stage() {
         </span>
       </span>
     </button>
-    <a
-      href="https://www.cssdesignawards.com/"
-      className="stage-corner-badge stage-corner-badge--third"
-      id="third-act-corner-badge"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="CSS Design Awards: Special Kudos"
-    >
-      <img src="/assets/awards/cssda-special-kudos-white-alt.svg" width="90" height="90" alt="" decoding="async" />
-    </a>
   </div>
 </div>
     </>

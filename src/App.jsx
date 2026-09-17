@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import CustomCursor from "./components/CustomCursor";
 import TopHeader from "./components/TopHeader";
-import SiteMeta from "./components/SiteMeta";
 import Stage from "./components/Stage";
 import Continuation from "./components/Continuation";
 import Awwwards from "./components/Awwwards";
-import LeadForm from "./components/LeadForm";
+import LeadForm from "./components/WaitingList";
 
 /* The original site's enhancement scripts expect the full DOM to exist and
    enhance it imperatively. We render the identical markup in React, then load
@@ -14,13 +13,7 @@ const SCRIPTS = [
   "/assets/second-lullaby.js",
   "/assets/hero-intro.js",
   "/assets/ouro-site-bootstrap.js",
-  "/assets/vendor/flubber.min.js",
-  "/assets/hcard-atlas-morph.js",
-  "/assets/hcard-nota-morph.js",
-  "/assets/overture-ripple.js",
-  "/assets/mobile-top-nav.js",
   "/assets/custom-cursor.js",
-  "/assets/site-meta-panel.js",
 ];
 
 function loadScript(src) {
@@ -57,7 +50,6 @@ export default function App() {
     <>
       <CustomCursor />
       <TopHeader />
-      <SiteMeta />
       <Stage />
       <Continuation onRequestAccess={() => setLeadOpen(true)} />
       <Awwwards />

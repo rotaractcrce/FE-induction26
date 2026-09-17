@@ -3,16 +3,22 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --port 8081",
+    "dev": "vite --port 8081",
+    "dev:api": "wrangler dev --port 8787",
+    "build": "vite build",
     "db:local": "wrangler d1 execute fe-induction26 --local --file migrations/0001_leads.sql -y",
-    "deploy": "wrangler deploy",
+    "deploy": "vite build && wrangler deploy",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "hono": "^4.9.0"
+    "hono": "^4.9.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250910.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.3.0",
     "wrangler": "^4.40.0"
   }
 }

@@ -961,4 +961,13 @@ admin.get("/logout", async (c) => {
 
 app.route("/admin", admin);
 
+/* ---------------- /1 route handler ---------------- */
+app.get("/1", async (c) => {
+  return c.env.ASSETS.fetch(new Request(new URL("/", c.req.url), c.req.raw));
+});
+app.get("/1/*", async (c) => {
+  return c.env.ASSETS.fetch(new Request(new URL("/", c.req.url), c.req.raw));
+});
+
 export default app;
+

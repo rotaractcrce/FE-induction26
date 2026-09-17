@@ -63,6 +63,11 @@
 <link rel="stylesheet" href="/assets/fonts.css">
 <link rel="preload" href="/assets/fonts/Modak-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/rc-logo-mark.png" as="image" type="image/png">
+<script>
+  if (window.location.pathname === "/1" || window.location.pathname.startsWith("/1/")) {
+    document.documentElement.classList.add("theme-purple");
+  }
+</script>
 <link rel="stylesheet" href="/assets/site.css">
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c03d6ffef74049bfa47b37b9a506ac3a"}'></script><!-- End Cloudflare Web Analytics -->
 </head>

@@ -31,6 +31,10 @@ export default function App() {
   const [leadOpen, setLeadOpen] = useState(false);
 
   useEffect(() => {
+    if (window.location.pathname === "/1" || window.location.pathname.startsWith("/1/")) {
+      document.documentElement.classList.add("theme-purple");
+    }
+
     Promise.allSettled(
       SCRIPTS.map((src) =>
         loadScript(src).catch((err) => {

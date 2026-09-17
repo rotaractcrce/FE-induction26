@@ -3868,3 +3868,13 @@ html.figma-capture-mode #second-act-sound-btn,
 html.figma-capture-mode #third-act-sound-btn {
   display: none !important;
 }
+
+/* Purple theme for /1 route */
+:root.theme-purple,
+html.theme-purple {
+  --red: #9d00ff;
+  --nav-second-hl-accent: color-mix(in srgb, var(--red) 72%, #e085ff);
+  --selection-bg: #9d00ff;
+  --selection-fg: #ffffff;
+}
+

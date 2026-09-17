@@ -181,3 +181,28 @@
   transition: background 0.15s ease;
 }
 .wl-footer-btn:hover { background: #e61800; }
+
+/* footer link rows: stacked, left-aligned; arrow marks external links */
+.wordmark-footer-nav--rows {
+  flex-wrap: wrap !important;
+  row-gap: 6px;
+}
+.wordmark-footer-nav--rows .wordmark-footer-row {
+  width: 100%;
+  flex: none;
+}
+.wf-madeby {
+  opacity: 0.55;
+}
+.wf-arrow {
+  display: inline-block;
+  margin-inline-start: 0.35em;
+  font-size: 0.85em;
+  transform: rotate(0deg) translateY(-0.1em);
+  opacity: 0.55;
+  transition: opacity 0.15s ease, translate 0.15s ease;
+}
+.wordmark-footer-start a:hover .wf-arrow {
+  opacity: 1;
+  translate: 2px -2px;
+}

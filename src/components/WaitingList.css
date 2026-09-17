@@ -262,13 +262,15 @@ header.scroll-intro-header-strip .scroll-intro-logo--left {
   justify-self: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   height: var(--rc-mark-h);
   justify-content: center;
   /* optical: Modak caps sit high in the em box - nudge down to center on the gear */
   box-sizing: border-box;
-  padding-top: calc(var(--rc-mark-h) * 0.07);
+  padding-top: calc(var(--rc-mark-h) * 0.05);
   font-family: "Modak", system-ui, sans-serif;
-  font-size: calc(var(--rc-mark-h) / 2);
+  font-size: calc(var(--rc-mark-h) / 1.9);
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -278,6 +280,8 @@ header.scroll-intro-header-strip .scroll-intro-logo--left {
 }
 .rc-wordmark > span {
   display: block;
+  /* hug the caps: kills the dead descender space that left a gap under CRCE */
+  line-height: 0.8;
 }
 html.scroll-intro-scrollable.scroll-intro-logo-past-third-act .rc-wordmark {
   opacity: 0 !important;
@@ -290,4 +294,75 @@ html.nav-hero-second-hl:not(.nav-over-third-red) .rc-wordmark {
 }
 html.nav-over-third-red .rc-wordmark {
   color: var(--bg);
+}
+
+/* third-act headline: force each line centered so short rows
+   (WE ARE / CRCE.) sit on the dotted ring''s vertical centerline */
+.third-act-inner--hl .hl-line,
+.third-act-inner--hl .hl-inner {
+  text-align: center;
+}
+
+/* third-act headline: flex-centering (immune to text-align inheritance
+   quirks) so every row shares the ring''s vertical centerline */
+.third-act-inner--hl .hero-hl-mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.third-act-inner--hl .third-act-hl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.third-act-inner--hl .hl-line {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.third-act-inner--hl .hl-inner {
+  display: flex;
+  justify-content: center;
+}
+
+/* third-act headline: .hl-line boxes carry extra bottom padding (reveal-mask
+   room), making ink sit high in a centered block. Pad the h2 top by the same
+   order so ink - not the box - centers on the dotted ring. */
+.third-act-inner--hl .third-act-hl {
+  padding-top: 0.32em;
+}
+
+/* CTA pill above the footer (opens the waiting-list modal) */
+.wl-cta-row {
+  padding: 8px var(--site-meta-fab-left, 16px) 26px;
+  box-sizing: border-box;
+}
+.wl-cta-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 20px 24px;
+  background: #171412;
+  color: #f5f1ea;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.wl-cta-pill:hover {
+  background: #ff1b00;
+}
+.wl-cta-pill:active {
+  transform: scale(0.99);
+}
+.wl-cta-arrow {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }

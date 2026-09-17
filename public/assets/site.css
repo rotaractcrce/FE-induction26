@@ -2000,7 +2000,8 @@ html.scroll-intro-cards-over-nav.scroll-intro-scrollable
 .second-hl-particles-wrap canvas {
   position: absolute;
   left: 50%;
-  top: 50%;
+  /* Shift down by half the difference of hero-content top and bottom padding to perfectly align the circle with the flex-centered text */
+  top: calc(50% + (var(--scroll-intro-header-clear) - max(28px, env(safe-area-inset-bottom, 0px) + 16px)) / 2);
   display: block;
   border-radius: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.14);

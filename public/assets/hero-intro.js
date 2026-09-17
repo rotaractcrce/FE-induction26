@@ -787,18 +787,18 @@ function attachHlCharExitHideAfterTransform(c) {
   var exitInProgress = false;
   var scrollIntent = 0;
   var revealTimer = null;
-  var SECOND_LINES = ["We are an AI-native", "product studio."];
+  var SECOND_LINES = ["We are", "Rotaract CRCE."];
   /** Mobile / small break (≤600px): line breaks match design (short nowrap rows). */
-  var SECOND_LINES_MOBILE = ["We are an", "AI-native", "product", "studio"];
+  var SECOND_LINES_MOBILE = ["We are", "Rotaract", "CRCE."];
   function getSecondHeadlineLines() {
     return window.matchMedia("(max-width: 600px)").matches
       ? SECOND_LINES_MOBILE
       : SECOND_LINES;
   }
   /* One .hl-line each - same mask as hero. */
-  var THIRD_LINES = ["Where play", "meets curiosity", "and craft."];
+  var THIRD_LINES = ["Where", "curiosity meets", "opportunity."];
   /** Small / mobile (≤600px) only - extra rows; large breakpoints use THIRD_LINES. */
-  var THIRD_LINES_MOBILE = ["Where play", "meets", "curiosity", "and craft."];
+  var THIRD_LINES_MOBILE = ["Where", "curiosity", "meets", "opportunity."];
   function getThirdHeadlineLines() {
     return window.matchMedia("(max-width: 600px)").matches
       ? THIRD_LINES_MOBILE

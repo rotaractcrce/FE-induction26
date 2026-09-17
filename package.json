@@ -1,0 +1,18 @@
+{
+  "name": "fe-induction26",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8081",
+    "db:local": "wrangler d1 execute fe-induction26 --local --file migrations/0001_leads.sql -y",
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "hono": "^4.9.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250910.0",
+    "wrangler": "^4.40.0"
+  }
+}

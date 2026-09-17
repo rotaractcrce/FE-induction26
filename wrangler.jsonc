@@ -1,0 +1,25 @@
+{
+  // Cloudflare Workers config. To deploy for real:
+  //   1. `npx wrangler d1 create fe-induction26` and paste the returned database_id below
+  //   2. `npx wrangler secret put ADMIN_USER` / `npx wrangler secret put ADMIN_PASSWORD`
+  //      (the vars below are dev-only fallbacks — remove them before going live)
+  "name": "fe-induction26",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/admin", "/admin/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fe-induction26",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "vars": {
+    "ADMIN_USER": "admin",
+    "ADMIN_PASSWORD": "ouro-dev-admin"
+  }
+}

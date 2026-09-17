@@ -133,8 +133,9 @@ admin.get("/", async (c) => {
       </html>`);
   }
 
+  // capped read: dashboard shows the latest 1000 (export is the full dump)
   const { results } = await c.env.DB.prepare(
-    "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC"
+    "SELECT id, name, email, mobile, created_at FROM leads ORDER BY id DESC LIMIT 1000"
   ).all();
 
   const rows = (results as Lead[]) ?? [];
@@ -229,9 +230,43 @@ admin.get("/", async (c) => {
 admin.post("/", async (c) => {
   const body = await c.req.parseBody();
   const pin = String((body as Record<string, unknown>).pin ?? "");
+  const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
+  const now = Math.floor(Date.now() / 1000);
+
+  // brute-force throttle: 1 read per attempt; exponential lockout on repeat fails
+  const row = await c.env.DB.prepare(
+    "SELECT fails, locked_until FROM auth_throttle WHERE ip = ?1"
+  )
+    .bind(ip)
+    .first<{ fails: number; locked_until: number }>();
+  if (row && row.locked_until > now) {
+    return c.text(
+      "Too many attempts. Try again in " + (row.locked_until - now) + "s.",
+      429
+    );
+  }
+
   if (pin !== c.env.ADMIN_PIN) {
+    const fails = (row?.fails ?? 0) + 1;
+    const lockFor = Math.min(3600, 30 * fails * fails); // 30s, 2m, 4.5m, 8m…
+    await c.env.DB.prepare(
+      `INSERT INTO auth_throttle (ip, fails, locked_until)
+       VALUES (?1, ?2, ?3)
+       ON CONFLICT (ip) DO UPDATE SET fails = ?2, locked_until = ?3`
+    )
+      .bind(ip, fails, now + lockFor)
+      .run();
     return c.text("Wrong PIN", 401);
   }
+
+  // correct PIN: clear own row + purge stale ones (bounded table, no cron)
+  await c.env.DB.prepare("DELETE FROM auth_throttle WHERE ip = ?1")
+    .bind(ip)
+    .run();
+  await c.env.DB.prepare("DELETE FROM auth_throttle WHERE locked_until < ?1")
+    .bind(now - 86400)
+    .run();
+
   setCookie(c, "admin_session", await tokenFor(c), {
     httpOnly: true,
     secure: true,

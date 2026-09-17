@@ -6,7 +6,9 @@ export default function Continuation({ onRequestAccess }) {
     <div className="scroll-intro-below__inner">
       <h2 className="sr-only" id="scroll-intro-below-leaders-heading">Experience and leadership</h2>
       <div id="scroll-intro-below-statement-leaders" className="scroll-intro-below__statements">
-        <p className="scroll-intro-below__statement">We are two design leaders who&rsquo;ve spent years leading teams and launching products used by millions. And now we&rsquo;re building our own apps, tools, and brands, and we treat each one as a way to sharpen our craft.</p>
+        <p className="scroll-intro-below__statement">Classrooms are great. But we prefer what happens <em>outside them</em>.</p>
+        <p className="scroll-intro-below__statement">Running <em>Heart &amp; Sole</em>, taking 250+ people to <em>Footslog</em>, meeting new people, and somehow making it all happen. That&rsquo;s kind of the point.</p>
+        <p className="scroll-intro-below__statement">Want in? <em>Apply now</em>.</p>
       </div>
     </div>
   </section>

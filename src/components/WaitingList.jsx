@@ -43,8 +43,17 @@ export default function WaitingList({ onClose }) {
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
   const [shaking, setShaking] = useState(false);
+  const [closing, setClosing] = useState(false);
   const firstInput = useRef(null);
   const shakeTimer = useRef(null);
+
+  function handleClose() {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 220);
+  }
 
   useEffect(() => {
     if (viewState === "register") {
@@ -58,7 +67,7 @@ export default function WaitingList({ onClose }) {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -66,7 +75,7 @@ export default function WaitingList({ onClose }) {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [viewState, onClose]);
+  }, [closing]);
 
   useEffect(() => () => clearTimeout(shakeTimer.current), []);
 
@@ -149,8 +158,8 @@ export default function WaitingList({ onClose }) {
   return (
     <>
       <div
-        className={`landing-card-overlay ${viewState !== "default" ? "blur" : ""}`}
-        onClick={onClose}
+        className={`landing-card-overlay ${viewState !== "default" ? "blur" : ""} ${closing ? "closing" : ""}`}
+        onClick={handleClose}
       />
 
       <div
@@ -159,12 +168,12 @@ export default function WaitingList({ onClose }) {
         aria-modal="true"
         aria-label="Join the waiting list"
       >
-        <div className={`landing-card-container landing-card-container--${viewState}`}>
+        <div className={`landing-card-container landing-card-container--${viewState} ${closing ? "closing" : ""}`}>
           <header className={`landing-card-header ${isHeaderVisible ? "visible" : ""}`}>
             <button
               type="button"
               className="header-action visible"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -244,7 +253,7 @@ export default function WaitingList({ onClose }) {
                   We&rsquo;ll notify <strong>{values.email}</strong> when induction slots open.
                 </div>
                 <div className="landing-card-actions" style={{ width: "100%" }}>
-                  <button type="button" className="button primary" onClick={onClose}>
+                  <button type="button" className="button primary" onClick={handleClose}>
                     <div>Done</div>
                   </button>
                 </div>

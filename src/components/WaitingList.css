@@ -5,17 +5,46 @@
   inset: 0;
   width: 100%;
   height: 100dvh;
-  height: 100dvh;
   z-index: 10000;
   background: rgba(20, 16, 12, 0.28);
   -webkit-backdrop-filter: blur(0);
   backdrop-filter: blur(0);
-  transition: backdrop-filter 0.2s linear, -webkit-backdrop-filter 0.2s linear;
+  animation: wl-overlay-fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .landing-card-overlay.blur {
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
+}
+
+.landing-card-overlay.closing {
+  animation: wl-overlay-fade-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes wl-overlay-fade-in {
+  from {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+  }
+}
+
+@keyframes wl-overlay-fade-out {
+  from {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+  }
+  to {
+    opacity: 0;
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
 }
 
 .landing-card-index {
@@ -26,7 +55,6 @@
   top: 0;
   position: fixed;
   width: 100%;
-  height: 100dvh;
   height: 100dvh;
   z-index: 10001;
   pointer-events: none;
@@ -41,6 +69,43 @@
               height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   /* Desktop.fm Y positioning: sits comfortably above mobile keyboard and vertically centered */
   margin-top: -30px;
+  animation: landing-card-spring-in 0.48s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+  will-change: transform, opacity;
+}
+
+.landing-card-container.closing {
+  animation: landing-card-spring-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes landing-card-spring-in {
+  0% {
+    opacity: 0;
+    transform: translateY(180px) scale(0.92);
+  }
+  40% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-6px) scale(1.008);
+  }
+  88% {
+    transform: translateY(2px) scale(0.998);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes landing-card-spring-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(120px) scale(0.94);
+  }
 }
 
 /* desktop.fm states & dimensions */

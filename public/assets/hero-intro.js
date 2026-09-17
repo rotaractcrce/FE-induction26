@@ -1580,8 +1580,8 @@ function attachHlCharExitHideAfterTransform(c) {
 
   function thirdActUnlockNeedPx() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? 85
-      : 200;
+      ? 20
+      : 40;
   }
   /** Rotaract wordmark: mouse-repel physics + bg.mp4 clip (matches index.html). */
   function initScrollIntroWordmarkEffects(cont) {
@@ -2648,27 +2648,9 @@ function attachHlCharExitHideAfterTransform(c) {
       });
     });
   }
-  /** Statement strip under the third act, then project cards (matches mobile swipe-unlock scroll). */
+  /** Statement strip under the third act: user scrolls naturally at their own pace. */
   function scrollIntroBelowAfterThirdActUnlock() {
-    void document.documentElement.offsetHeight;
-    var reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    var nextSection =
-      document.getElementById("studio") ||
-      document.getElementById("projects") ||
-      document.getElementById("scroll-intro-below-after-cards");
-    var scrollBehavior = reduceMotion ? "auto" : "smooth";
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: scrollBehavior, block: "start" });
-    } else {
-      var se = document.scrollingElement || document.documentElement;
-      var vh = window.innerHeight || 640;
-      se.scrollTop = Math.min(
-        se.scrollTop + Math.round(vh * 0.2),
-        se.scrollHeight,
-      );
-    }
+    // Disabled programmatic auto-scroll to allow natural user-paced scrolling into statements
   }
 
   function startThirdAct() {
@@ -2955,13 +2937,6 @@ function attachHlCharExitHideAfterTransform(c) {
     if (dy <= 0) return;
     var amt = dy * touchIntentMultiplier();
     if (phase === 5) {
-      if (isMobileIntent() && !mobilePhase5FastUnlockDone) {
-        mobilePhase5FastUnlockDone = true;
-        introTouchDidAdvance = true;
-        /* Scroll after continuation inits (same frame chain as unlock) to avoid layout jump. */
-        unlockThirdActPageScroll(scrollIntroBelowAfterThirdActUnlock);
-        return;
-      }
       thirdActUnlockWheelAccum += amt;
       tryUnlockThirdActIfReady();
       if (phase === 6) {
@@ -3016,7 +2991,7 @@ function attachHlCharExitHideAfterTransform(c) {
     if (phase === 25) return;
     if (phase === 0) return;
     if (phase === 5) {
-      unlockThirdActPageScroll(scrollIntroBelowAfterThirdActUnlock);
+      unlockThirdActPageScroll();
       return;
     }
     if (isThirdActTerminal()) return;

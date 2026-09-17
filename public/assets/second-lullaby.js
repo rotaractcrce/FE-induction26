@@ -3,7 +3,7 @@
  * no extra layers. Loudness follows pointer speed only while the cursor is in the
  * ring zone (caller sets zone). Silent while the pointer is still; motion opens the bed.
  * Same mobile / reduced-motion policy as third-act audio.
- * Mute preference: localStorage key ouroSecondParticleSoundMuted (UI in index.html).
+ * Mute preference: localStorage key rcSecondParticleSoundMuted (UI in index.html).
  */
 (function () {
   var ATTACK_TC = 0.14;
@@ -20,7 +20,7 @@
   var userMuted = false;
   try {
     userMuted =
-      window.localStorage.getItem("ouroSecondParticleSoundMuted") === "1";
+      window.localStorage.getItem("rcSecondParticleSoundMuted") === "1";
   } catch (_) {
     userMuted = false;
   }
@@ -94,7 +94,7 @@
     fadeOutputGain();
   }
 
-  window.OuroSecondLullaby = {
+  window.RCSecondLullaby = {
     isMuted: function () {
       return userMuted;
     },
@@ -103,7 +103,7 @@
       userMuted = !!muted;
       try {
         window.localStorage.setItem(
-          "ouroSecondParticleSoundMuted",
+          "rcSecondParticleSoundMuted",
           userMuted ? "1" : "0",
         );
       } catch (_) {}

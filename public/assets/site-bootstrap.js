@@ -1,5 +1,5 @@
 (function (w) {
-  w.OuroSite = w.OuroSite || {};
+  w.RCSite = w.RCSite || {};
   /** Meaningful overlap of any element with the layout viewport (vert + horiz). */
   function regionMostlyVisible(el) {
     if (!el) return false;
@@ -14,15 +14,15 @@
       hOverlap > Math.min(48, r.width * 0.1)
     );
   }
-  w.OuroSite.regionMostlyVisible = regionMostlyVisible;
-  w.OuroSite.cardMostlyVisible = function (cardEl) {
+  w.RCSite.regionMostlyVisible = regionMostlyVisible;
+  w.RCSite.cardMostlyVisible = function (cardEl) {
     return regionMostlyVisible(cardEl);
   };
   /**
    * Canonical copy for the “About this build” stats (panel typewriter + terminal `log` flow).
    * Update here when figures change; synced to DOM on site-meta init.
    */
-  w.OuroSite.BUILD_STATS_LINES = [
+  w.RCSite.BUILD_STATS_LINES = [
     "Over 29 days, we worked through roughly:",
     "160 hours of tracked AI-assisted build sessions",
     "3,240 Composer requests",

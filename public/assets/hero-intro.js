@@ -218,8 +218,8 @@ function attachHlCharExitHideAfterTransform(c) {
     if (!document.documentElement.classList.contains("scroll-intro-scrollable"))
       return true;
     var vis =
-      window.OuroSite && typeof window.OuroSite.cardMostlyVisible === "function"
-        ? window.OuroSite.cardMostlyVisible
+      window.RCSite && typeof window.RCSite.cardMostlyVisible === "function"
+        ? window.RCSite.cardMostlyVisible
         : null;
     if (vis) return vis(el);
     var r = el.getBoundingClientRect();
@@ -240,8 +240,8 @@ function attachHlCharExitHideAfterTransform(c) {
       return false;
     if (!secondParticleWrap) return true;
     var vis =
-      window.OuroSite && typeof window.OuroSite.cardMostlyVisible === "function"
-        ? window.OuroSite.cardMostlyVisible
+      window.RCSite && typeof window.RCSite.cardMostlyVisible === "function"
+        ? window.RCSite.cardMostlyVisible
         : null;
     if (vis) return vis(secondParticleWrap);
     var r = secondParticleWrap.getBoundingClientRect();
@@ -264,8 +264,8 @@ function attachHlCharExitHideAfterTransform(c) {
       )
     ) {
       spRaf = null;
-      if (window.OuroSecondLullaby)
-        window.OuroSecondLullaby.tick({ zone: false, mouseSpd: 0 });
+      if (window.RCSecondLullaby)
+        window.RCSecondLullaby.tick({ zone: false, mouseSpd: 0 });
       return;
     }
     /* scroll-intro-scrollable + stale --visible: second canvas is display:none (0×0), ring test must not run. */
@@ -278,12 +278,12 @@ function attachHlCharExitHideAfterTransform(c) {
     }
     spRaf = requestAnimationFrame(secondParticleFrame);
     if (!spCtx || !spParticles || !spParticles.length) {
-      if (window.OuroSecondLullaby) {
+      if (window.RCSecondLullaby) {
         var inRingEarly =
           spPointerInRingAudioZone() &&
           !siteMetaPanelMutesParticleAudio() &&
           secondActParticleAudioAudible();
-        window.OuroSecondLullaby.tick({
+        window.RCSecondLullaby.tick({
           zone: inRingEarly,
           mouseSpd: inRingEarly ? spMouse.spd || 0 : 0,
         });
@@ -342,12 +342,12 @@ function attachHlCharExitHideAfterTransform(c) {
     spCtx.globalAlpha = 1;
     spCtx.restore();
 
-    if (window.OuroSecondLullaby) {
+    if (window.RCSecondLullaby) {
       var inRingSp =
         spPointerInRingAudioZone() &&
         !siteMetaPanelMutesParticleAudio() &&
         secondActParticleAudioAudible();
-      window.OuroSecondLullaby.tick({
+      window.RCSecondLullaby.tick({
         zone: inRingSp,
         mouseSpd: inRingSp ? spMouse.spd || 0 : 0,
       });
@@ -366,7 +366,7 @@ function attachHlCharExitHideAfterTransform(c) {
   }
 
   function secondParticlesStop() {
-    if (window.OuroSecondLullaby) window.OuroSecondLullaby.reset();
+    if (window.RCSecondLullaby) window.RCSecondLullaby.reset();
     if (spRaf) {
       cancelAnimationFrame(spRaf);
       spRaf = null;
@@ -561,18 +561,18 @@ function attachHlCharExitHideAfterTransform(c) {
       !wrap.classList.contains("third-act-particles-vp-wrap--visible")
     ) {
       tpRaf = null;
-      if (window.OuroRedLullaby)
-        window.OuroRedLullaby.tick({ zone: false, mouseSpd: 0 });
+      if (window.RCRedLullaby)
+        window.RCRedLullaby.tick({ zone: false, mouseSpd: 0 });
       return;
     }
     tpRaf = requestAnimationFrame(thirdParticleFrame);
     if (!tpCtx || !tpParticles || !tpParticles.length) {
-      if (window.OuroRedLullaby) {
+      if (window.RCRedLullaby) {
         var inRingEarly =
           tpPointerInRingAudioZone() &&
           !siteMetaPanelMutesParticleAudio() &&
           thirdActParticleAudioAudible();
-        window.OuroRedLullaby.tick({
+        window.RCRedLullaby.tick({
           zone: inRingEarly,
           mouseSpd: inRingEarly ? tpMouse.spd || 0 : 0,
         });
@@ -636,12 +636,12 @@ function attachHlCharExitHideAfterTransform(c) {
     tpCtx.globalAlpha = 1;
     tpCtx.restore();
 
-    if (window.OuroRedLullaby) {
+    if (window.RCRedLullaby) {
       var inRing =
         tpPointerInRingAudioZone() &&
         !siteMetaPanelMutesParticleAudio() &&
         thirdActParticleAudioAudible();
-      window.OuroRedLullaby.tick({
+      window.RCRedLullaby.tick({
         zone: inRing,
         mouseSpd: inRing ? tpMouse.spd || 0 : 0,
       });
@@ -696,8 +696,8 @@ function attachHlCharExitHideAfterTransform(c) {
   }
 
   function thirdParticlesStop() {
-    if (window.OuroRedLullaby)
-      window.OuroRedLullaby.tick({ zone: false, mouseSpd: 0 });
+    if (window.RCRedLullaby)
+      window.RCRedLullaby.tick({ zone: false, mouseSpd: 0 });
     if (thirdBurstTimer) {
       clearTimeout(thirdBurstTimer);
       thirdBurstTimer = null;
@@ -862,8 +862,8 @@ function attachHlCharExitHideAfterTransform(c) {
   }
 
   function syncThirdActSoundButton() {
-    if (!thirdActSoundBtn || !window.OuroRedLullaby) return;
-    var muted = OuroRedLullaby.isMuted();
+    if (!thirdActSoundBtn || !window.RCRedLullaby) return;
+    var muted = RCRedLullaby.isMuted();
     thirdActSoundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
     thirdActSoundBtn.setAttribute(
       "aria-label",
@@ -892,34 +892,34 @@ function attachHlCharExitHideAfterTransform(c) {
       el.textContent = "";
     });
   }
-  if (thirdActSoundBtn && window.OuroRedLullaby) {
+  if (thirdActSoundBtn && window.RCRedLullaby) {
     syncThirdActSoundButton();
     thirdActSoundBtn.addEventListener("click", function () {
-      OuroRedLullaby.setMuted(!OuroRedLullaby.isMuted());
+      RCRedLullaby.setMuted(!RCRedLullaby.isMuted());
       syncThirdActSoundButton();
     });
     wireParticleSoundRollover(thirdActSoundBtn, function () {
-      return OuroRedLullaby.isMuted();
+      return RCRedLullaby.isMuted();
     });
   }
   var secondActSoundBtn = document.getElementById("second-act-sound-btn");
   function syncSecondActSoundButton() {
-    if (!secondActSoundBtn || !window.OuroSecondLullaby) return;
-    var muted = OuroSecondLullaby.isMuted();
+    if (!secondActSoundBtn || !window.RCSecondLullaby) return;
+    var muted = RCSecondLullaby.isMuted();
     secondActSoundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
     secondActSoundBtn.setAttribute(
       "aria-label",
       muted ? "Unmute interaction sound" : "Mute interaction sound",
     );
   }
-  if (secondActSoundBtn && window.OuroSecondLullaby) {
+  if (secondActSoundBtn && window.RCSecondLullaby) {
     syncSecondActSoundButton();
     secondActSoundBtn.addEventListener("click", function () {
-      OuroSecondLullaby.setMuted(!OuroSecondLullaby.isMuted());
+      RCSecondLullaby.setMuted(!RCSecondLullaby.isMuted());
       syncSecondActSoundButton();
     });
     wireParticleSoundRollover(secondActSoundBtn, function () {
-      return OuroSecondLullaby.isMuted();
+      return RCSecondLullaby.isMuted();
     });
   }
   syncThirdActTorusInFromShell();
@@ -1025,16 +1025,16 @@ function attachHlCharExitHideAfterTransform(c) {
   }
 
   function taIsLikelyIOSWebKitVideoBlendBug() {
-    if (window.__ouroTaIOSVideoBlend != null)
-      return window.__ouroTaIOSVideoBlend;
+    if (window.__rcTaIOSVideoBlend != null)
+      return window.__rcTaIOSVideoBlend;
     var ua = navigator.userAgent || "";
     var iOSDevice = /iP(ad|hone|od)/.test(ua);
     var iPadDesktop =
       typeof navigator !== "undefined" &&
       navigator.platform === "MacIntel" &&
       navigator.maxTouchPoints > 1;
-    window.__ouroTaIOSVideoBlend = !!(iOSDevice || iPadDesktop);
-    return window.__ouroTaIOSVideoBlend;
+    window.__rcTaIOSVideoBlend = !!(iOSDevice || iPadDesktop);
+    return window.__rcTaIOSVideoBlend;
   }
   /**
    * WebKit (esp. iOS): compositing from HTMLVideoElement with mode "difference" can draw blank/wrong.
@@ -1583,7 +1583,7 @@ function attachHlCharExitHideAfterTransform(c) {
       ? 85
       : 200;
   }
-  /** Ouro Labs wordmark: mouse-repel physics + bg.mp4 clip (matches index.html). */
+  /** Rotaract wordmark: mouse-repel physics + bg.mp4 clip (matches index.html). */
   function initScrollIntroWordmarkEffects(cont) {
     if (window.__scrollIntroWordmarkFxInit || !cont) return;
 

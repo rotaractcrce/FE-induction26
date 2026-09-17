@@ -31,7 +31,7 @@
   --ease-snap-in: cubic-bezier(0.55, 0, 0.95, 0.38);
   --g: 88px;
   /* Particle ring outer Ø = min(viewport) * 0.72 - must stay in sync with secondParticleSetup (spBaseR = core * 0.36) */
-  --particle-o-core: min(100vw, 100vh);
+  --particle-o-core: min(100vw, 100dvh);
   --particle-o-diam: calc(var(--particle-o-core) * 0.72);
   /* Kudos: intro corners (acts 1–3) + leadership strip — matched size */
   --corner-kudos-badge-size: clamp(64px, 11vw, 90px);
@@ -70,7 +70,7 @@
   --scroll-intro-header-clear: max(
     calc(
       var(--scroll-intro-nav-top) + var(--scroll-intro-logo-h) +
-        var(--scroll-intro-nav-stack-extra) + clamp(1.75rem, 3.6vh, 2.75rem)
+        var(--scroll-intro-nav-stack-extra) + clamp(1.75rem, 3.6dvh, 2.75rem)
     ),
     6.25rem
   );
@@ -311,7 +311,7 @@ html.site-meta-footer-row-visible #site-meta-open.site-meta-btn--fab {
 }
 html.scroll-intro-scrollable .stage {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh;
   height: auto;
   overflow: visible;
@@ -331,9 +331,9 @@ html.scroll-intro-scrollable .third-act.third-act--active.third-act--in-flow {
   flex: 0 0 auto;
   align-self: stretch;
   width: 100%;
-  min-height: 100vh;
   min-height: 100dvh;
-  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   height: 100dvh;
   z-index: 1;
   pointer-events: auto;
@@ -360,8 +360,8 @@ html.scroll-intro-scrollable
   /* Horizontal gutter matches .hscroll-track padding + scroll-padding (card strip insets). */
   padding-left: var(--g);
   padding-right: var(--g);
-  padding-top: clamp(128px, 24vh, 280px);
-  padding-bottom: clamp(128px, 24vh, 280px);
+  padding-top: clamp(128px, 24dvh, 280px);
+  padding-bottom: clamp(128px, 24dvh, 280px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -418,7 +418,7 @@ html.scroll-intro-scrollable
 }
 /* Tighten gap to footer wordmark (~35% less than default stack) */
 #scroll-intro-below-after-cards {
-  padding-bottom: calc(0.5 * clamp(128px, 24vh, 280px));
+  padding-bottom: calc(0.5 * clamp(128px, 24dvh, 280px));
 }
 
 .site-awards {
@@ -572,7 +572,7 @@ html.scroll-intro-scrollable
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding-left: var(--g);
-  height: clamp(720px, 78vh, 900px);
+  height: clamp(720px, 78dvh, 900px);
   background: var(--bg);
   border-bottom: 1px solid var(--ink);
 }
@@ -620,7 +620,7 @@ html.scroll-intro-scrollable
 }
 .scroll-intro-continuation .hcard-visual {
   flex: 1 1 auto;
-  min-height: clamp(160px, 30vh, 320px);
+  min-height: clamp(160px, 30dvh, 320px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -954,7 +954,7 @@ html.scroll-intro-scrollable
   transition: height 0.5s var(--ease-hcard-surface);
   /* Grow with expanded copy - no in-card scrollbar; page scroll handles overflow. */
   height: auto;
-  min-height: clamp(720px, 78vh, 900px);
+  min-height: clamp(720px, 78dvh, 900px);
 }
 .scroll-intro-continuation .hcard-detail-wrap {
   display: grid;
@@ -1244,9 +1244,9 @@ html.scroll-intro-scrollable
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: clamp(320px, 52vh, 780px);
+  min-height: clamp(320px, 52dvh, 780px);
   /* Tighter space below last subcopy to wordmark (see #scroll-intro-below-after-cards) */
-  padding: calc(0.5 * clamp(84px, 13vh, 180px)) 0 0 0;
+  padding: calc(0.5 * clamp(84px, 13dvh, 180px)) 0 0 0;
   overflow: visible;
   background: var(--bg);
   opacity: 0;
@@ -1261,7 +1261,7 @@ html.scroll-intro-scrollable
 }
 .scroll-intro-continuation .wordmark-row {
   padding: 0;
-  margin-top: calc(0.5 * clamp(132px, 20vh, 320px));
+  margin-top: calc(0.5 * clamp(132px, 20dvh, 320px));
   width: 100%;
   max-width: none;
   display: flex;
@@ -1438,11 +1438,11 @@ html.scroll-intro-scrollable
 }
 @media (max-width: 900px) {
   .scroll-intro-continuation .hscroll-track {
-    height: clamp(640px, 74vh, 820px);
+    height: clamp(640px, 74dvh, 820px);
   }
   .scroll-intro-continuation .hscroll-track.hscroll-track--card-expanded {
     height: auto;
-    min-height: clamp(720px, 80vh, 900px);
+    min-height: clamp(720px, 80dvh, 900px);
   }
   .scroll-intro-continuation .hcard {
     flex: 0 0 clamp(360px, min(90%, calc(100% - 2 * var(--g))), 680px);
@@ -1467,11 +1467,11 @@ html.scroll-intro-scrollable
     --card-body-line-height: 1.6;
   }
   .scroll-intro-continuation .hscroll-track {
-    height: clamp(600px, 72vh, 760px);
+    height: clamp(600px, 72dvh, 760px);
   }
   .scroll-intro-continuation .hscroll-track.hscroll-track--card-expanded {
     height: auto;
-    min-height: clamp(680px, 78vh, 840px);
+    min-height: clamp(680px, 78dvh, 840px);
   }
   .scroll-intro-continuation .hcard {
     flex: 0 0 clamp(260px, min(92%, 560px, calc(100% - 2 * var(--g))), 560px);
@@ -1519,14 +1519,14 @@ html.scroll-intro-scrollable
   }
   /* Less air between leadership subcopy and footer wordmark (footer min-height + row margins were desktop-sized). */
   #scroll-intro-below-after-cards {
-    padding-bottom: calc(0.32 * clamp(104px, 18vh, 240px));
+    padding-bottom: calc(0.32 * clamp(104px, 18dvh, 240px));
   }
   .scroll-intro-continuation footer {
-    min-height: clamp(210px, 34vh, 520px);
-    padding-top: calc(0.32 * clamp(72px, 10vh, 160px));
+    min-height: clamp(210px, 34dvh, 520px);
+    padding-top: calc(0.32 * clamp(72px, 10dvh, 160px));
   }
   .scroll-intro-continuation .wordmark-row {
-    margin-top: calc(0.32 * clamp(88px, 14vh, 260px));
+    margin-top: calc(0.32 * clamp(88px, 14dvh, 260px));
   }
 }
 
@@ -1986,7 +1986,7 @@ html.scroll-intro-cards-over-nav.scroll-intro-scrollable
   width: 100%;
   min-width: 100%;
   max-width: 100%;
-  height: 100vh;
+  height: 100dvh;
   height: 100dvh;
   min-height: 100%;
   overflow: visible;
@@ -2346,7 +2346,7 @@ html.scroll-intro-cards-over-nav.scroll-intro-scrollable
   min-height: 0;
   width: 100%;
   max-width: 100%;
-  height: 100vh;
+  height: 100dvh;
   height: 100dvh;
   /* Must mirror .third-act-inner: full-bleed center ≠ padded content center (nav clears top) */
   padding-top: max(
@@ -3417,7 +3417,7 @@ button.site-meta-panel__terminal-submit {
   white-space: nowrap;
   pointer-events: none;
 }
-/* Hidden until Ouro status line has finished typing “Ready” (set by JS on each panel reset) */
+/* Hidden until the status line has finished typing “Ready” (set by JS on each panel reset) */
 .site-meta-panel__terminal-form.site-meta-panel__terminal-form--awaiting-ready {
   display: none;
 }
@@ -3529,7 +3529,7 @@ button.site-meta-panel__terminal-submit {
   color: color-mix(in srgb, var(--site-meta-stream-status) 72%, #444);
 }
 /* iOS / coarse touch: min 16px on focused inputs avoids page zoom. Scope the same
-   --site-meta-txt under .terminal-ui so the log, ourolabs@origin prompt, and input row
+   --site-meta-txt under .terminal-ui so the log, terminal prompt, and input row
    all match (previously only the form used max(16px, …) and the log looked smaller). */
 @media (hover: none) and (pointer: coarse) {
   .site-meta-panel__terminal-ui {
@@ -3784,7 +3784,7 @@ html.figma-capture-mode #stage {
 html.figma-capture-mode .hero-content {
   position: relative;
   flex: 0 0 auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh;
   width: 100%;
   display: flex;
@@ -3799,7 +3799,7 @@ html.figma-capture-mode .figma-capture-second-slice {
 }
 html.figma-capture-mode .figma-capture-second-slice__stack {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   min-height: 100dvh;
   width: 100%;
 }
@@ -3848,9 +3848,9 @@ html.figma-capture-mode #third-act {
   opacity: 1 !important;
   pointer-events: none;
   width: 100%;
-  min-height: 100vh;
   min-height: 100dvh;
-  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   height: 100dvh;
   z-index: 1;
 }

@@ -59,7 +59,7 @@
   }
   var userMuted = false;
   try {
-    userMuted = window.localStorage.getItem("ouroThirdActSoundMuted") === "1";
+    userMuted = window.localStorage.getItem("rcThirdActSoundMuted") === "1";
   } catch (_) {
     userMuted = false;
   }
@@ -611,7 +611,7 @@
     motionLayer = null;
   }
 
-  window.OuroRedLullaby = {
+  window.RCRedLullaby = {
     /** Whether interaction sound is muted (persisted in localStorage). */
     isMuted: function () {
       return userMuted;
@@ -624,7 +624,7 @@
       userMuted = !!muted;
       try {
         window.localStorage.setItem(
-          "ouroThirdActSoundMuted",
+          "rcThirdActSoundMuted",
           userMuted ? "1" : "0",
         );
       } catch (_) {}

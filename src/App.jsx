@@ -7,12 +7,13 @@ import Awwwards from "./components/Awwwards";
 import LeadForm from "./components/WaitingList";
 
 /* The original site's enhancement scripts expect the full DOM to exist and
-   enhance it imperatively. We render the identical markup in React, then load
-   them in the original order after mount. */
+   enhance it imperatively. All surviving scripts are order-independent
+   (hero-intro guards every cross-dependency), so they load in parallel. */
 const SCRIPTS = [
-  "/assets/second-lullaby.js",
   "/assets/hero-intro.js",
-  "/assets/ouro-site-bootstrap.js",
+  "/assets/site-bootstrap.js",
+  "/assets/second-lullaby.js",
+  "/assets/red-lullaby.js",
   "/assets/custom-cursor.js",
 ];
 
@@ -30,20 +31,13 @@ export default function App() {
   const [leadOpen, setLeadOpen] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      for (const src of SCRIPTS) {
-        if (cancelled) return;
-        try {
-          await loadScript(src);
-        } catch (err) {
+    Promise.allSettled(
+      SCRIPTS.map((src) =>
+        loadScript(src).catch((err) => {
           console.error(err);
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
+        }),
+      ),
+    );
   }, []);
 
   return (

@@ -26,7 +26,7 @@ export default function Stage() {
   </button>
   <div className="hero-content">
     <div className="hero-hl-mask" id="hero-hl-mask">
-      <h1 className="hero-hl" id="hero-hl" aria-label="Ouro Labs"></h1>
+      <h1 className="hero-hl" id="hero-hl" aria-label="Rotaract CRCE"></h1>
     </div>
   </div>
   

@@ -2,3 +2,23 @@ node_modules/
 .wrangler/
 .dev.vars
 dist/
+
+# env & secrets
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editor / tooling
+.vscode/
+.idea/
+graphify-out/
+*.tsbuildinfo

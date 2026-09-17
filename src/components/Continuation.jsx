@@ -55,15 +55,16 @@ export default function Continuation({ onRequestAccess }) {
         <canvas id="wm-vid-canvas-scroll-intro" width="300" height="150" aria-hidden="true"></canvas>
       </span>
       <hr className="wordmark-footer-hairline" aria-hidden="true" />
-      <nav className="wordmark-footer-nav" aria-label="Site links">
-        <span className="wordmark-footer-start">
-          <button type="button" className="wl-footer-btn" onClick={onRequestAccess}>Join the waiting list</button>
-          <a href="#studio">Studio</a>
-          <a href="#projects">Projects</a>
-          <a href="mailto:rotaractcrce@gmail.com">Contact</a>
-          <a href="https://www.linkedin.com/company/ouro-labs/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <nav className="wordmark-footer-nav wordmark-footer-nav--rows" aria-label="Site links">
+        <span className="wordmark-footer-start wordmark-footer-row">
+          <a href="https://www.rotaractcrce.com" target="_blank" rel="noopener noreferrer">Official website<span className="wf-arrow" aria-hidden="true">↗</span></a>
+          <a href="https://footslog.rotaractcrce.com" target="_blank" rel="noopener noreferrer">Footslog<span className="wf-arrow" aria-hidden="true">↗</span></a>
         </span>
-        <span className="wordmark-footer-copyright">&copy; 2026</span>
+        <span className="wordmark-footer-start wordmark-footer-row">
+          <span className="wf-madeby">Made by</span>
+          <a href="https://github.com/ulric-collaco" target="_blank" rel="noopener noreferrer">Ulric<span className="wf-arrow" aria-hidden="true">↗</span></a>
+          <a href="https://github.com/VishveshC" target="_blank" rel="noopener noreferrer">Vishvesh<span className="wf-arrow" aria-hidden="true">↗</span></a>
+        </span>
       </nav>
     </div>
   </footer>

@@ -2655,7 +2655,9 @@ function attachHlCharExitHideAfterTransform(c) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     var nextSection =
-      document.getElementById("studio") || document.getElementById("projects");
+      document.getElementById("studio") ||
+      document.getElementById("projects") ||
+      document.getElementById("scroll-intro-below-after-cards");
     var scrollBehavior = reduceMotion ? "auto" : "smooth";
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: scrollBehavior, block: "start" });

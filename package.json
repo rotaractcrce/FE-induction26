@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "hono": "^4.9.0",
+    "ios-vibrator-pro-max": "^3.0.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },

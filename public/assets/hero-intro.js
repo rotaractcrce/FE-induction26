@@ -2627,6 +2627,9 @@ function attachHlCharExitHideAfterTransform(c) {
   function unlockThirdActPageScroll(onDone) {
     if (phase !== 5) return;
     phase = 6;
+    if (typeof window.__ouroHaptic === "function") {
+      window.__ouroHaptic("reveal", { force: true });
+    }
     syncNavHeroSecondHeadline();
     detachHeroScrollLocks();
     thirdActUnlockWheelAccum = 0;
@@ -2663,10 +2666,20 @@ function attachHlCharExitHideAfterTransform(c) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     var nextSection =
-      document.getElementById("studio") || document.getElementById("projects");
-    var scrollBehavior = reduceMotion ? "auto" : "smooth";
+      document.getElementById("studio") ||
+      document.getElementById("projects") ||
+      document.querySelector("#scroll-intro-continuation .scroll-intro-below");
+    // Mobile Safari can leave a scripted smooth scroll mid-flight when the
+    // gesture that unlocked page scrolling is still settling. The target is
+    // the next reading section, so make that handoff deterministic on touch
+    // devices while preserving the desktop transition.
+    var scrollBehavior = reduceMotion || isMobileIntent() ? "auto" : "smooth";
     if (nextSection) {
-      nextSection.scrollIntoView({ behavior: scrollBehavior, block: "start" });
+      // scrollIntoView() can preserve a mobile visual-viewport inset even
+      // when the target has no scroll margin. Use the document coordinate so
+      // the continuation really starts at the top of the page scrollport.
+      var targetY = window.pageYOffset + nextSection.getBoundingClientRect().top;
+      window.scrollTo({ top: targetY, behavior: scrollBehavior });
     } else {
       var se = document.scrollingElement || document.documentElement;
       var vh = window.innerHeight || 640;

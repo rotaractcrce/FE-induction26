@@ -3740,6 +3740,12 @@ button.site-meta-panel__terminal-submit {
     display: none !important;
   }
 }
+@media (hover: none) and (pointer: coarse) and (max-width: 600px) {
+  /* The fixed Awwwards ribbon consumes too much of a phone viewport and touch edge. */
+  #awwwards {
+    display: none !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .particle-sound-btn[aria-pressed="true"] .particle-sound-btn__bar {
     animation: none;

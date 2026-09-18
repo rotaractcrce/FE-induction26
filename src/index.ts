@@ -910,7 +910,7 @@ admin.post("/", async (c) => {
   const ip = c.req.header("CF-Connecting-IP") ?? "unknown";
   const now = Math.floor(Date.now() / 1000);
 
-  // brute-force throttle: 1 read per attempt; exponential lockout on repeat fails
+  // brute-force throttle: 5 free tries, then linear lockout (30s per fail over, capped 10m)
   const row = await c.env.DB.prepare(
     "SELECT fails, locked_until FROM auth_throttle WHERE ip = ?1"
   )
@@ -925,7 +925,8 @@ admin.post("/", async (c) => {
 
   if (pin !== c.env.ADMIN_PIN) {
     const fails = (row?.fails ?? 0) + 1;
-    const lockFor = Math.min(3600, 30 * fails * fails); // 30s, 2m, 4.5m, 8m…
+    const over = fails - 5;
+    const lockFor = over <= 0 ? 0 : Math.min(600, 30 * over); // tries 1-5: no lock, then 30s, 60s… capped 10m
     await c.env.DB.prepare(
       `INSERT INTO auth_throttle (ip, fails, locked_until)
        VALUES (?1, ?2, ?3)

@@ -807,7 +807,7 @@ function attachHlCharExitHideAfterTransform(c) {
   /** Primary hero: built in JS so mobile can use more .hl-line rows (must stay in sync with templates). */
   var PRIMARY_LINE_SPECS_DESKTOP = [
     [{ k: "t", v: "always stepping" }],
-    [{ k: "t", v: "outside your" }],
+    [{ k: "t", v: "outside our" }],
     [
       { k: "a", v: "comfort " },
       { k: "t", v: "zone" },
@@ -816,7 +816,7 @@ function attachHlCharExitHideAfterTransform(c) {
   var PRIMARY_LINE_SPECS_MOBILE = [
     [{ k: "t", v: "always" }],
     [{ k: "t", v: "stepping" }],
-    [{ k: "t", v: "outside your" }],
+    [{ k: "t", v: "outside our" }],
     [
       { k: "a", v: "comfort " },
       { k: "t", v: "zone" },

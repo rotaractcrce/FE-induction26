@@ -27,7 +27,7 @@ export default function Continuation({ onRequestAccess }) {
 
   <div className="wl-cta-row">
     <button type="button" className="wl-cta-pill" onClick={onRequestAccess}>
-      <span>Join the waiting list</span>
+      <span>Count me in</span>
       <svg className="wl-cta-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
         <path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>

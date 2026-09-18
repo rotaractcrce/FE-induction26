@@ -148,7 +148,7 @@ export default function WaitingList({ onClose }) {
 
   const headerTitle =
     viewState === "register"
-      ? "Join waiting list"
+      ? "Count me in"
       : viewState === "done"
         ? "You're on the list"
         : "";
@@ -270,7 +270,7 @@ export default function WaitingList({ onClose }) {
                     className="button primary"
                     onClick={() => setViewState("register")}
                   >
-                    <div>Join the waiting list</div>
+                    <div>Count me in</div>
                     <div>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -13,17 +13,6 @@ export default function Stage() {
   <div className="second-hl-particles-wrap" id="second-hl-particles-wrap" aria-hidden="true">
     <canvas id="second-hl-particles-canvas" width="300" height="300"></canvas>
   </div>
-  <button type="button" className="particle-sound-btn particle-sound-btn--second" id="second-act-sound-btn" aria-pressed="true" aria-label="Mute interaction sound">
-    <span className="particle-sound-btn__inner">
-      <span className="particle-sound-btn__rollover" aria-hidden="true"></span>
-      <span className="particle-sound-btn__waves" aria-hidden="true">
-        <span className="particle-sound-btn__bar"></span>
-        <span className="particle-sound-btn__bar"></span>
-        <span className="particle-sound-btn__bar"></span>
-        <span className="particle-sound-btn__bar"></span>
-      </span>
-    </span>
-  </button>
   <div className="hero-content">
     <div className="hero-hl-mask" id="hero-hl-mask">
       <h1 className="hero-hl" id="hero-hl" aria-label="Rotaract CRCE"></h1>
@@ -50,17 +39,6 @@ export default function Stage() {
         <h2 className="hero-hl third-act-hl" id="third-act-hl"></h2>
       </div>
     </div>
-    <button type="button" className="particle-sound-btn particle-sound-btn--third" id="third-act-sound-btn" aria-pressed="true" aria-label="Mute interaction sound">
-      <span className="particle-sound-btn__inner">
-        <span className="particle-sound-btn__rollover" aria-hidden="true"></span>
-        <span className="particle-sound-btn__waves" aria-hidden="true">
-          <span className="particle-sound-btn__bar"></span>
-          <span className="particle-sound-btn__bar"></span>
-          <span className="particle-sound-btn__bar"></span>
-          <span className="particle-sound-btn__bar"></span>
-        </span>
-      </span>
-    </button>
   </div>
 </div>
     </>

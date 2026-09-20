@@ -12,8 +12,6 @@ import LeadForm from "./components/WaitingList";
 const SCRIPTS = [
   "/assets/hero-intro.js",
   "/assets/site-bootstrap.js",
-  "/assets/second-lullaby.js",
-  "/assets/red-lullaby.js",
   "/assets/custom-cursor.js",
 ];
 

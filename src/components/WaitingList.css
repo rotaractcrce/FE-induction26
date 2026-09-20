@@ -748,7 +748,40 @@ html.nav-over-third-red .rc-wordmark {
  transform: scale(0.99);
 }
 .wl-cta-arrow {
- width: 20px;
- height: 20px;
- flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+/* desktop: cap the pill width so it doesn't stretch full-bleed */
+@media (min-width: 640px) {
+  .wl-cta-pill {
+    max-width: 480px;
+    margin-inline: auto;
+  }
+}
+
+/* single scroll root: overflow-x:hidden computes body into a second scroller
+   (spec: non-visible x forces y to auto) - clip avoids that, fixing chained/
+   sticking scroll on mobile; inner clip stops section-level bars on desktop */
+html.scroll-intro-scrollable body {
+  overflow-x: clip;
+}
+.third-act-inner {
+  overflow: clip;
+}
+
+/* no visible scrollbars on desktop or mobile - scrolling still works */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }

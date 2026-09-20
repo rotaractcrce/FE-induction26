@@ -44,6 +44,7 @@ export default function WaitingList({ onClose }) {
   const [sending, setSending] = useState(false);
   const [shaking, setShaking] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [kbOffset, setKbOffset] = useState(0);
   const firstInput = useRef(null);
   const shakeTimer = useRef(null);
 
@@ -78,6 +79,26 @@ export default function WaitingList({ onClose }) {
   }, [closing]);
 
   useEffect(() => () => clearTimeout(shakeTimer.current), []);
+
+  /* lift the sheet above the on-screen keyboard (mobile): track the
+     visualViewport shrink while an input is focused */
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const fullH = vv.height;
+    const onResize = () => {
+      const shrink = fullH - vv.height;
+      const inputFocused = document.activeElement instanceof HTMLInputElement;
+      setKbOffset(inputFocused && shrink > 150 ? Math.round(shrink) : 0);
+      if (inputFocused && shrink > 150) {
+        try {
+          document.activeElement.scrollIntoView({ block: "nearest" });
+        } catch (_) {}
+      }
+    };
+    vv.addEventListener("resize", onResize);
+    return () => vv.removeEventListener("resize", onResize);
+  }, []);
 
   const set = (k) => (e) => {
     let v = e.target.value;
@@ -168,6 +189,7 @@ export default function WaitingList({ onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label="Join the waiting list"
+        style={kbOffset ? { translate: `0 ${-kbOffset}px` } : undefined}
       >
         <div className={`landing-card-container landing-card-container--${viewState} ${closing ? "closing" : ""}`}>
           <header className={`landing-card-header ${isHeaderVisible ? "visible" : ""}`}>

@@ -137,6 +137,7 @@ export default function WaitingList({ onClose }) {
         shake();
       } else {
         setViewState("done");
+        if (window.RCHaptics) window.RCHaptics.pulse(2);
       }
     } catch {
       setErrors({ name: "Network error — please try again." });

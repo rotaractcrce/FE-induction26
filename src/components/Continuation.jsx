@@ -5,9 +5,13 @@ export default function Continuation({ onRequestAccess }) {
   <section className="scroll-intro-below" id="studio" aria-labelledby="scroll-intro-below-leaders-heading">
     <div className="scroll-intro-below__inner">
       <h2 className="sr-only" id="scroll-intro-below-leaders-heading">Experience and leadership</h2>
-      <div id="scroll-intro-below-statement-leaders" className="scroll-intro-below__statements">
+      <div className="scroll-intro-below__statements">
         <p className="scroll-intro-below__statement">Classrooms are great. But we prefer what happens <em>outside them</em>.</p>
+      </div>
+      <div className="scroll-intro-below__statements">
         <p className="scroll-intro-below__statement">Running <em>Heart &amp; Sole Run</em>, taking 250+ people to <em>Footslog</em>, meeting new people, and somehow making it all happen. That&rsquo;s kind of the point.</p>
+      </div>
+      <div className="scroll-intro-below__statements">
         <p className="scroll-intro-below__statement">Want in? <em>Apply now</em>.</p>
       </div>
     </div>

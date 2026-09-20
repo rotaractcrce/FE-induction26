@@ -10,6 +10,7 @@ import LeadForm from "./components/WaitingList";
    enhance it imperatively. All surviving scripts are order-independent
    (hero-intro guards every cross-dependency), so they load in parallel. */
 const SCRIPTS = [
+  "/assets/haptics.js",
   "/assets/hero-intro.js",
   "/assets/site-bootstrap.js",
   "/assets/custom-cursor.js",

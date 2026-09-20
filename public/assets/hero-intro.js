@@ -1548,6 +1548,7 @@ function attachHlCharExitHideAfterTransform(c) {
       requestAnimationFrame(function () {
         thirdActHl.classList.add("revealed");
         phase = 5;
+        if (window.RCHaptics) window.RCHaptics.pulse(1);
         syncNavHeroSecondHeadline();
         exitInProgress = false;
         thirdActUnlockWheelAccum = 0;
@@ -1925,6 +1926,7 @@ function attachHlCharExitHideAfterTransform(c) {
     function runFooterWordmarkLetterEntrance() {
       if (footerWordmarkIntroPlayed) return;
       footerWordmarkIntroPlayed = true;
+      if (window.RCHaptics) window.RCHaptics.pulse(1);
       var wm = document.getElementById("wm-letters-scroll-intro");
       if (!wm) {
         initWordmarkEffectsWhenNeeded();
@@ -2619,6 +2621,7 @@ function attachHlCharExitHideAfterTransform(c) {
   function unlockThirdActPageScroll(onDone) {
     if (phase !== 5) return;
     phase = 6;
+    if (window.RCHaptics) window.RCHaptics.pulse(2);
     syncNavHeroSecondHeadline();
     detachHeroScrollLocks();
     thirdActUnlockWheelAccum = 0;
@@ -2803,6 +2806,7 @@ function attachHlCharExitHideAfterTransform(c) {
       requestAnimationFrame(function () {
         heroHl.classList.add("revealed");
         phase = 3;
+        if (window.RCHaptics) window.RCHaptics.pulse(1);
         syncNavHeroSecondHeadline();
         if (secondParticleWrap) {
           requestAnimationFrame(function () {

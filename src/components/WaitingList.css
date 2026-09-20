@@ -785,3 +785,8 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* stacked statement blocks: same gap as stacked statements */
+.scroll-intro-below__statements + .scroll-intro-below__statements {
+  margin-top: clamp(20px, 3.2vw, 32px);
+}

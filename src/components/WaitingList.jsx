@@ -45,6 +45,7 @@ export default function WaitingList({ onClose }) {
   const [shaking, setShaking] = useState(false);
   const [closing, setClosing] = useState(false);
   const [kbOffset, setKbOffset] = useState(0);
+  const kbOffsetRef = useRef(0);
   const firstInput = useRef(null);
   const shakeTimer = useRef(null);
 
@@ -80,21 +81,32 @@ export default function WaitingList({ onClose }) {
 
   useEffect(() => () => clearTimeout(shakeTimer.current), []);
 
-  /* lift the sheet above the on-screen keyboard (mobile): track the
-     visualViewport shrink while an input is focused */
+  /* keep the focused field just above the on-screen keyboard (mobile):
+     lift only what the field needs - never the full keyboard height,
+     so the sheet can't fly off the top of the screen */
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
     const fullH = vv.height;
     const onResize = () => {
       const shrink = fullH - vv.height;
-      const inputFocused = document.activeElement instanceof HTMLInputElement;
-      setKbOffset(inputFocused && shrink > 150 ? Math.round(shrink) : 0);
-      if (inputFocused && shrink > 150) {
-        try {
-          document.activeElement.scrollIntoView({ block: "nearest" });
-        } catch (_) {}
+      const ae = document.activeElement;
+      const inputFocused = ae instanceof HTMLInputElement;
+      if (!inputFocused || shrink <= 150) {
+        kbOffsetRef.current = 0;
+        setKbOffset(0);
+        return;
       }
+      /* rect includes the current lift - add it back for a stable reading */
+      const fieldBottom = ae.getBoundingClientRect().bottom + kbOffsetRef.current;
+      const targetBottom = vv.height - 16;
+      const need = Math.max(0, fieldBottom - targetBottom);
+      const next = Math.round(Math.min(need, shrink));
+      kbOffsetRef.current = next;
+      setKbOffset(next);
+      try {
+        ae.scrollIntoView({ block: "nearest" });
+      } catch (_) {}
     };
     vv.addEventListener("resize", onResize);
     return () => vv.removeEventListener("resize", onResize);

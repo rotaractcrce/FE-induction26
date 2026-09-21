@@ -108,7 +108,7 @@ admin.get("/", async (c) => {
           <meta name="robots" content="noindex, nofollow" />
           <title>Admin PIN | Rotaract CRCE</title>
           <link rel="stylesheet" href="/assets/fonts.css" />
-          <link rel="icon" type="image/png" href="/gad.png" />
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
           <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -450,10 +450,10 @@ admin.get("/", async (c) => {
         <meta name="robots" content="noindex, nofollow" />
         <title>Waiting List | Rotaract CRCE Admin</title>
         <link rel="stylesheet" href="/assets/fonts.css" />
-        <link rel="icon" type="image/png" href="/gad.png" />
-          <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-          <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <style>
           :root { color-scheme: light; }
           *, *::before, *::after { box-sizing: border-box; }

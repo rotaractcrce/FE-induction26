@@ -78,6 +78,28 @@
     }
   }
 
+  /* One toggle attempt: input.click() first (most reliable programmatic
+     toggle in WebKit), label.click() as fallback. Exactly one path runs. */
+  function fireToggle() {
+    var input = triggerLabel
+      ? triggerLabel.querySelector("input")
+      : null;
+    if (input) {
+      try {
+        input.click();
+        return true;
+      } catch (_) {}
+    }
+    try {
+      var label = ensureTrigger();
+      if (label) {
+        label.click();
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
   function iosTick(ticks) {
     var label = ensureTrigger();
     if (!label) return;
@@ -86,9 +108,7 @@
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
-    try {
-      label.click();
-    } catch (_) {}
+    fireToggle();
     restoreFocus(activeElement);
     if (ticks > 1) {
       window.setTimeout(function () {
@@ -97,9 +117,7 @@
           document.visibilityState === "hidden"
         )
           return;
-        try {
-          label.click();
-        } catch (_) {}
+        fireToggle();
         restoreFocus(activeElement);
       }, 45);
     }
@@ -195,6 +213,28 @@
     /* Direct tap pulses - caller guarantees a gesture. */
     tap: function (ticks) {
       rawPulse(ticks || 1);
+    },
+    /* Remote diagnosis on-device: run in the console, report the result. */
+    debug: function () {
+      var mq = function (q) {
+        try {
+          return window.matchMedia(q).matches;
+        } catch (_) {
+          return null;
+        }
+      };
+      return {
+        armed: armed,
+        isIos: isIos(),
+        coarsePointer: mq("(any-pointer: coarse)"),
+        reducedMotion: mq("(prefers-reduced-motion: reduce)"),
+        hasVibrate: !!(
+          typeof navigator !== "undefined" &&
+          typeof navigator.vibrate === "function"
+        ),
+        triggerMounted: !!(triggerLabel && document.body.contains(triggerLabel)),
+        userAgent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+      };
     },
   };
 })();
